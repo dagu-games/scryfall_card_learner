@@ -34,7 +34,7 @@ each card has:
 name
 mana cost
 type
-rules text (includes power/toughness)
+oracle text (includes power/toughness)
 successes
 attempts
 link to image of full card, may be array

@@ -2,17 +2,59 @@
 <html>
 
 <body>
-
-  <script src="./main.js"></script>
-
-
+  <script src="./lib/vue.js"></script>
+  <link rel="stylesheet" href="style.css">
 
 
-  <div id="settings_div">
-    
-    <button type="button" onclick="reset()">Start Sim</button>
+  <div id="app">
+    <div>
+      successes:{{ successes }}
+      attempts:{{ attempts }}
+      accuracy: {{((successes / attempts) * 100).toPrecision(5)}}%
+      <br>
+      <button v-on:click="toggle_settings()">Settings</button>
+      <div v-if="is_settings_hidden()">
+        <div>
+          <img v-for="art_link in cards[current_card].art_links" :src="art_link" :alt="'oops'" />
+
+          <br>
+          name: {{current_question_type!='name'? cards[current_card].name : '???'}}
+          <br>
+          mana_cost: {{current_question_type!='mana_cost'? cards[current_card].mana_cost : '???'}}
+          <br>
+          type: {{current_question_type!='type'? cards[current_card].type : '???'}}
+          <br>
+          oracle_text: {{current_question_type!='oracle_text'? cards[current_card].oracle_text : '???'}}
+          <br>
+          successes: {{cards[current_card].successes}}
+          <br>
+          attempts: {{cards[current_card].attempts}}
+          <br>
+          accuracy: {{((cards[current_card].successes / cards[current_card].attempts) * 100).toPrecision(5)}}
+          <br>
+          <button v-on:click="answer_question(0)">{{current_question_options[0]}}</button>
+          <br>
+          <button v-on:click="answer_question(1)">{{current_question_options[1]}}</button>
+          <br>
+          <button v-on:click="answer_question(2)">{{current_question_options[2]}}</button>
+          <br>
+          <button v-on:click="answer_question(3)">{{current_question_options[3]}}</button>
+          <br>
+
+        </div>
+      </div>
+      <div v-if="!is_settings_hidden()">
+        <div>
+          <input v-model="seed_string" placeholder="example: legal:modern">
+          <button v-on:click="toggle_settings()">Close</button>
+          <button v-on:click="seed_cards()">Seed Cards</button>
+          <br>
+        </div>
+      </div>
+      </div>
   </div>
 
+  <script src="./main.js"></script>
 </body>
 
 </html>
