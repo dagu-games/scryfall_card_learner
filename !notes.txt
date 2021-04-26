@@ -1,0 +1,41 @@
+learn cycle:
+start with 100 cards and a seed string (which can be empty, and is appended with " lang:english"), pulled in order from oldest to newest, all prints, no extras
+new cards are added in order from oldest to newest, all prints, no extras, filtered by seed string
+
+N = number of cards on the list so far
+
+each round consists of N questions, if you get a question wrong, you start over
+if you complete the round, add a card
+
+
+
+settings screen:
+load save file button
+load save file input
+reset button
+seed string input
+initialize cards list button
+
+learn screen:
+current card, blanking the info that we are guessing
+when displaying art anywhere, be prepared to display multiple images
+4 options, 3 random from the card list, 1 is correct
+
+pics of last 5 cards
+
+
+
+save file contains:
+overall attempts
+overall successes
+cards array(in order from oldest to newest)
+(split, transforming, and MDF cards will be combined into one card separated by " // ")
+each card has:
+name
+mana cost
+type
+rules text (includes power/toughness)
+successes
+attempts
+link to image of full card, may be array
+link to art, may be array
