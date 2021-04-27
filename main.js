@@ -71,7 +71,7 @@ var app = new Vue({
     current_card: 0,
     successes: 0,
     attempts: 0,
-    hide_settings: false,
+    hide_settings: true,
     current_question_type: "name",
     current_question_options: [
       "card1",
@@ -83,17 +83,14 @@ var app = new Vue({
     question_order: [5,4,3,2,1,0],
     seed_string: "",
     round: 0,
+    scryfall_page: 1,
+
   },
   mounted:function(){
         this.onLoaded();
   },
   methods: {
-    onLoaded: function() {
-      //try to load save file, if not there, seed the cards
-
-
-
-
+    refreshQuestions: function() {
       this.current_card = 0;
       this.shuffle(this.question_order);
       this.correct_answer_index = Math.floor(Math.random() * 4);
@@ -130,6 +127,14 @@ var app = new Vue({
           j++;
         }
       }
+    },
+    onLoaded: function() {
+      //try to load save file, if not there, seed the cards
+
+
+
+      this.seed_cards();
+      this.refreshQuestions();
     },
     shuffle: function(arr) {
       var currentIndex = arr.length, temporaryValue, randomIndex;
@@ -225,69 +230,96 @@ var app = new Vue({
       this.shuffle(this.question_order);
     },
     seed_cards: function () {
-      app.cards = [
-        {
-          name:"Giant's Growth",
-          mana_cost:"{G}",
-          type:"instant",
-          oracle_text:"target creature gets +3/+3",
-          successes:0,
-          attempts:0,
-          card_links:["images/card_back.jpg"],
-          art_links:["images/card_back.jpg"],
-        },
-        {
-          name:"Giant's Growth1",
-          mana_cost:"{G}1",
-          type:"instant1",
-          oracle_text:"target creature gets +3/+31",
-          successes:0,
-          attempts:0,
-          card_links:["images/card_back.jpg","images/card_back.jpg"],
-          art_links:["images/card_back.jpg","images/card_back.jpg"],
-        },
-        {
-          name:"Giant's Growth2",
-          mana_cost:"{G}2",
-          type:"instant2",
-          oracle_text:"target creature gets +3/+32",
-          successes:0,
-          attempts:0,
-          card_links:["images/card_back.jpg"],
-          art_links:["images/card_back.jpg"],
-        },
-        {
-          name:"Giant's Growth3",
-          mana_cost:"{G}3",
-          type:"instant3",
-          oracle_text:"target creature gets +3/+33",
-          successes:0,
-          attempts:0,
-          card_links:["images/card_back.jpg"],
-          art_links:["images/card_back.jpg"],
-        },
-        {
-          name:"Giant's Growth4",
-          mana_cost:"{G}4",
-          type:"instant4",
-          oracle_text:"target creature gets +3/+34",
-          successes:0,
-          attempts:0,
-          card_links:["images/card_back.jpg"],
-          art_links:["images/card_back.jpg"],
-        },
-        {
-          name:"Giant's Growth5",
-          mana_cost:"{G}5",
-          type:"instant5",
-          oracle_text:"target creature gets +3/+35",
-          successes:0,
-          attempts:0,
-          card_links:["images/card_back.jpg"],
-          art_links:["images/card_back.jpg"],
-        },
-      ];
+      const Http = new XMLHttpRequest();
+      var query = "";
+      if(this.seed_string = ""){
+        query = "lang:english";
+      }else {
+        query = this.seed_string + " lang:english";
+      }
+      const url='https://api.scryfall.com/cards/search?order=released&unique=prints&dir=asc&include_extras=false&page=' + 1 + '&q=' + encodeURI(query);
+      Http.open("GET", url);
 
+      Http.onreadystatechange = (e) => {
+
+
+        if (Http.readyState == 4 && Http.status == 200) {
+          //console.log(Http.responseText);
+          var response = JSON.parse(Http.responseText);
+          console.log(response);
+          this.cards = [];
+          this.question_order = [];
+          for(var i = 0; i < 100; i++){
+            var tcard = {};
+            if(response.data[i].card_faces == null){
+              //a single faced card
+              tcard.name = response.data[i].name;
+              tcard.id = response.data[i].id;
+              tcard.mana_cost = response.data[i].mana_cost;
+              tcard.type = response.data[i].type_line;
+              tcard.oracle_text = response.data[i].oracle_text.replace(tcard.name, "[CARD NAME]");
+              if(response.data[i].power != null){
+                tcard.oracle_text +=  "\n" + response.data[i].power + "/" + response.data[i].toughness;
+              }
+              tcard.card_links = [];
+              tcard.art_links = [];
+              if(response.data[i].image_uris != null){
+                if(response.data[i].image_uris.png != null){
+                  tcard.card_links.push(response.data[i].image_uris.png);
+                }
+                if(response.data[i].image_uris.art_crop != null){
+                  tcard.art_links.push(response.data[i].image_uris.art_crop);
+                }
+              }
+            }else{
+              //a double (or more) faced card
+              tcard.id = response.data[i].id;
+              tcard.name = response.data[i].card_faces[0].name;
+              tcard.mana_cost = response.data[i].card_faces[0].mana_cost;
+              tcard.type = response.data[i].card_faces[0].type_line;
+              tcard.oracle_text = response.data[i].card_faces[0].oracle_text.replace(response.data[i].card_faces[0].name, "[CARD NAME]");
+              if(response.data[i].card_faces[0].power != null){
+                tcard.oracle_text +=  "\n" + response.data[i].card_faces[0].power + "/" + response.data[i].card_faces[0].toughness;
+              }
+              tcard.card_links = [];
+              tcard.art_links = [];
+              if(response.data[i].card_faces[0].image_uris != null){
+                if(response.data[i].card_faces[0].image_uris.png != null){
+                  tcard.card_links.push(response.data[i].card_faces[0].image_uris.png);
+                }
+                if(response.data[i].card_faces[0].image_uris.art_crop != null){
+                  tcard.art_links.push(response.data[i].card_faces[0].image_uris.art_crop);
+                }
+              }
+              for(var j = 1; j < response.data[i].card_faces.length; j++){
+                tcard.name += "  //  " + response.data[i].card_faces[j].name;
+                tcard.mana_cost += "  //  " + response.data[i].card_faces[j].mana_cost;
+                tcard.type += "  //  " + response.data[i].card_faces[j].type_line;
+                tcard.oracle_text += "  //  " + response.data[i].card_faces[j].oracle_text.replace(response.data[i].card_faces[j].name, "[CARD NAME]");;
+                if(response.data[i].card_faces[j].power != null){
+                  tcard.oracle_text +=  "\n" + response.data[i].card_faces[j].power + "/" + response.data[i].card_faces[j].toughness;
+                }
+                tcard.card_links = [];
+                tcard.art_links = [];
+                if(response.data[i].card_faces[j].image_uris != null){
+                  if(response.data[i].card_faces[j].image_uris.png != null){
+                    tcard.card_links.push(response.data[i].card_faces[j].image_uris.png);
+                  }
+                  if(response.data[i].card_faces[j].image_uris.art_crop != null){
+                    tcard.art_links.push(response.data[i].card_faces[j].image_uris.art_crop);
+                  }
+                }
+              }
+            }
+            this.cards.push(tcard);
+            this.question_order.push(this.cards.length-1);
+            //console.log(tcard);
+          }
+          this.refreshQuestions();
+        }
+      }
+
+      Http.send();
 
     },
   }
