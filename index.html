@@ -9,13 +9,23 @@
   <div id="app">
     <div>
       successes:{{ successes }}
+      <br>
       attempts:{{ attempts }}
+      <br>
       accuracy: {{((successes / attempts) * 100).toPrecision(5)}}%
       <br>
-      <button v-on:click="toggle_settings()">Settings</button>
+      Current Question: {{current_question_type}}
+      <br>
+      Current Round: {{round+1}}
+      <br>
+      <button v-on:click="toggle_settings()">Toggle Settings</button>
+      <br>
       <div v-if="is_settings_hidden()">
         <div>
+          <br>
+          <br>
           <img v-for="art_link in cards[question_order[current_card]].art_links" :src="art_link" :alt="'oops'" />
+
 
           <br>
           name: {{current_question_type!='name'? cards[question_order[current_card]].name : '???'}}
@@ -40,6 +50,34 @@
           <br>
           <button v-on:click="answer_question(3)">{{current_question_options[3]}}</button>
           <br>
+
+
+
+          <div v-if="((current_card-1) >= 0)">
+            <div>
+              <img v-for="art_link in cards[question_order[current_card-1]].art_links" :src="art_link" :alt="'oops'" />
+            </div>
+          </div>
+          <div v-if="((current_card-2) >= 0)">
+            <div>
+              <img v-for="art_link in cards[question_order[current_card-2]].art_links" :src="art_link" :alt="'oops'" />
+            </div>
+          </div>
+          <div v-if="((current_card-3) >= 0)">
+            <div>
+              <img v-for="art_link in cards[question_order[current_card-3]].art_links" :src="art_link" :alt="'oops'" />
+            </div>
+          </div>
+          <div v-if="((current_card-4) >= 0)">
+            <div>
+              <img v-for="art_link in cards[question_order[current_card-4]].art_links" :src="art_link" :alt="'oops'" />
+            </div>
+          </div>
+          <div v-if="((current_card-5) >= 0)">
+            <div>
+              <img v-for="art_link in cards[question_order[current_card-5]].art_links" :src="art_link" :alt="'oops'" />
+            </div>
+          </div>
 
         </div>
       </div>

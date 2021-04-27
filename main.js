@@ -10,10 +10,10 @@ var cards = [
     art_links:["images/card_back.jpg"],
   },
   {
-    name:"card2 // card3",
-    mana_cost:"card2 // card3",
-    type:"card2 // card3",
-    oracle_text:"card2 // card3",
+    name:"Giant's Growth1",
+    mana_cost:"{G}1",
+    type:"instant1",
+    oracle_text:"target creature gets +3/+31",
     successes:0,
     attempts:0,
     card_links:["images/card_back.jpg","images/card_back.jpg"],
@@ -82,8 +82,55 @@ var app = new Vue({
     correct_answer_index: 0,
     question_order: [5,4,3,2,1,0],
     seed_string: "",
+    round: 0,
+  },
+  mounted:function(){
+        this.onLoaded();
   },
   methods: {
+    onLoaded: function() {
+      //try to load save file, if not there, seed the cards
+
+
+
+
+      this.current_card = 0;
+      this.shuffle(this.question_order);
+      this.correct_answer_index = Math.floor(Math.random() * 4);
+      var question_types = [
+        "name",
+        "mana_cost",
+        "type",
+        "oracle_text"
+      ];
+      this.current_question_type = question_types[Math.floor(Math.random() * question_types.length)];
+
+      var possible_answers = [];
+      for(var i = 0; i < this.cards.length; i++){
+        var found = false;
+        if(this.cards[i][this.current_question_type] == this.cards[this.question_order[this.current_card]][this.current_question_type]){
+          found = true;
+        }
+        for(var j = 0; j < possible_answers.length; j++){
+          if(possible_answers[j] == this.cards[i][this.current_question_type]){
+            found = true;
+          }
+        }
+        if(!found){
+          possible_answers.push(this.cards[i][this.current_question_type]);
+        }
+      }
+      this.shuffle(possible_answers);
+      var j = 0;
+      for(var i = 0; i < 4; i++){
+        if(i==this.correct_answer_index){
+          this.current_question_options[i] = this.cards[this.question_order[this.current_card]][this.current_question_type];
+        }else{
+          this.current_question_options[i] = possible_answers[j];
+          j++;
+        }
+      }
+    },
     shuffle: function(arr) {
       var currentIndex = arr.length, temporaryValue, randomIndex;
 
@@ -115,55 +162,44 @@ var app = new Vue({
         if(this.current_card == this.cards.length){
           this.current_card = 0;
           this.add_card();
+          this.round++;
         }
       }else{
         this.current_card = 0;
+        this.shuffle(this.question_order);
       }
-      this.correct_answer_index = Math.floor(Math.random() * 5);
+      this.correct_answer_index = Math.floor(Math.random() * 4);
       var question_types = [
         "name",
         "mana_cost",
         "type",
-        "oracle_text",
-        "art_links",
+        "oracle_text"
       ];
-      var new_question_type = question_types[Math.floor(Math.random() * question_types.length)];
+      this.current_question_type = question_types[Math.floor(Math.random() * question_types.length)];
 
       var possible_answers = [];
       for(var i = 0; i < this.cards.length; i++){
         var found = false;
-        if(this.cards[i][new_question_type] == this.cards[this.question_order[this.current_card]][new_question_type]){
+        if(this.cards[i][this.current_question_type] == this.cards[this.question_order[this.current_card]][this.current_question_type]){
           found = true;
         }
         for(var j = 0; j < possible_answers.length; j++){
-          if(possible_answers[j] == this.cards[i][new_question_type]){
+          if(possible_answers[j] == this.cards[i][this.current_question_type]){
             found = true;
           }
         }
         if(!found){
-          possible_answers.push(this.cards[i][new_question_type]);
+          possible_answers.push(this.cards[i][this.current_question_type]);
         }
       }
       this.shuffle(possible_answers);
-      for(var i = 0; i < 5; i++){
+      var j = 0;
+      for(var i = 0; i < 4; i++){
         if(i==this.correct_answer_index){
-          if(new_question_type == "name"){
-            this.current_question_options[i] = this.cards[this.question_order[this.current_card]].name;
-          }
-          if(new_question_type == "mana_cost"){
-            this.current_question_options[i] = this.cards[this.question_order[this.current_card]].mana_cost;
-          }
-          if(new_question_type == "type"){
-            this.current_question_options[i] = this.cards[this.question_order[this.current_card]].type;
-          }
-          if(new_question_type == "oracle_text"){
-            this.current_question_options[i] = this.cards[this.question_order[this.current_card]].oracle_text;
-          }
-          if(new_question_type == "art"){
-            this.current_question_options[i] = this.cards[this.question_order[this.current_card]].art_link;
-          }
+          this.current_question_options[i] = this.cards[this.question_order[this.current_card]][this.current_question_type];
         }else{
-          this.current_question_options[i] = possible_answers[i];
+          this.current_question_options[i] = possible_answers[j];
+          j++;
         }
       }
     },
@@ -185,6 +221,8 @@ var app = new Vue({
         card_links:["images/card_back.jpg"],
         art_links:["images/card_back.jpg"],
       });
+      app.question_order.push(app.cards.length-1);
+      this.shuffle(this.question_order);
     },
     seed_cards: function () {
       app.cards = [
@@ -199,10 +237,10 @@ var app = new Vue({
           art_links:["images/card_back.jpg"],
         },
         {
-          name:"card2 // card3",
-          mana_cost:"card2 // card3",
-          type:"card2 // card3",
-          oracle_text:"card2 // card3",
+          name:"Giant's Growth1",
+          mana_cost:"{G}1",
+          type:"instant1",
+          oracle_text:"target creature gets +3/+31",
           successes:0,
           attempts:0,
           card_links:["images/card_back.jpg","images/card_back.jpg"],
