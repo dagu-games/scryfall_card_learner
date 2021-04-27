@@ -8,39 +8,33 @@
 
   <div id="app">
     <div>
-      successes:{{ successes }}
-      <br>
-      attempts:{{ attempts }}
-      <br>
-      accuracy: {{((successes / attempts) * 100).toPrecision(5)}}%
+      <button v-on:click="toggle_settings()">Toggle Settings</button>
       <br>
       Current Question: {{current_question_type}}
       <br>
       Current Round: {{round+1}}
       <br>
-      <button v-on:click="toggle_settings()">Toggle Settings</button>
       <br>
       <div v-if="is_settings_hidden()">
         <div>
-          <br>
-          <br>
-          <img v-for="art_link in cards[question_order[current_card]].art_links" :src="art_link" :alt="'oops'" />
 
+          <table style="width:20%;">
+            <tr style="width:100%;">
+              <td style="width:75%;">{{current_question_type!='name'? cards[question_order[current_card]].name : '???'}}</td>
+              <td style="width:25%;">{{current_question_type!='mana_cost'? cards[question_order[current_card]].mana_cost : '???'}}</td>
+            </tr>
+            <tr style="width:100%;">
+              <td colspan="2"><img v-for="art_link in cards[question_order[current_card]].art_links" style="width:100%;" :src="art_link" :alt="'oops'" /></td>
+            </tr>
+            <tr style="width:100%;">
+              <td colspan="2">{{current_question_type!='type'? cards[question_order[current_card]].type : '???'}}</td>
+            </tr>
+            <tr style="width:100%;">
+              <td colspan="2">{{current_question_type!='oracle_text'? cards[question_order[current_card]].oracle_text : '???'}}</td>
+            </tr>
+          </table>
 
           <br>
-          name: {{current_question_type!='name'? cards[question_order[current_card]].name : '???'}}
-          <br>
-          mana_cost: {{current_question_type!='mana_cost'? cards[question_order[current_card]].mana_cost : '???'}}
-          <br>
-          type: {{current_question_type!='type'? cards[question_order[current_card]].type : '???'}}
-          <br>
-          oracle_text: {{current_question_type!='oracle_text'? cards[question_order[current_card]].oracle_text : '???'}}
-          <br>
-          successes: {{cards[question_order[current_card]].successes}}
-          <br>
-          attempts: {{cards[question_order[current_card]].attempts}}
-          <br>
-          accuracy: {{((cards[question_order[current_card]].successes / cards[question_order[current_card]].attempts) * 100).toPrecision(5)}}
           <br>
           <button v-on:click="answer_question(0)">{{current_question_options[0]}}</button>
           <br>
@@ -52,33 +46,33 @@
           <br>
 
 
-
-          <div v-if="((current_card-1) >= 0)">
-            <div>
-              <img v-for="card_link in cards[question_order[current_card-1]].card_links" :src="card_link" :alt="'oops'" />
+          <div style="float:left;">
+            <div v-if="((current_card-1) >= 0)">
+              <div>
+                <img v-for="card_link in cards[question_order[current_card-1]].card_links" :src="card_link" :alt="'oops'" />
+              </div>
+            </div>
+            <div v-if="((current_card-2) >= 0)">
+              <div>
+                <img v-for="card_link in cards[question_order[current_card-2]].card_links" :src="card_link" :alt="'oops'" />
+              </div>
+            </div>
+            <div v-if="((current_card-3) >= 0)">
+              <div>
+                <img v-for="card_link in cards[question_order[current_card-3]].card_links" :src="card_link" :alt="'oops'" />
+              </div>
+            </div>
+            <div v-if="((current_card-4) >= 0)">
+              <div>
+                <img v-for="card_link in cards[question_order[current_card-4]].card_links" :src="card_link" :alt="'oops'" />
+              </div>
+            </div>
+            <div v-if="((current_card-5) >= 0)">
+              <div>
+                <img v-for="card_link in cards[question_order[current_card-5]].card_links" :src="card_link" :alt="'oops'" />
+              </div>
             </div>
           </div>
-          <div v-if="((current_card-2) >= 0)">
-            <div>
-              <img v-for="card_link in cards[question_order[current_card-2]].card_links" :src="card_link" :alt="'oops'" />
-            </div>
-          </div>
-          <div v-if="((current_card-3) >= 0)">
-            <div>
-              <img v-for="card_link in cards[question_order[current_card-3]].card_links" :src="card_link" :alt="'oops'" />
-            </div>
-          </div>
-          <div v-if="((current_card-4) >= 0)">
-            <div>
-              <img v-for="card_link in cards[question_order[current_card-4]].card_links" :src="card_link" :alt="'oops'" />
-            </div>
-          </div>
-          <div v-if="((current_card-5) >= 0)">
-            <div>
-              <img v-for="card_link in cards[question_order[current_card-5]].card_links" :src="card_link" :alt="'oops'" />
-            </div>
-          </div>
-
         </div>
       </div>
       <div v-if="!is_settings_hidden()">

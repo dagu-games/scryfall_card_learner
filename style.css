@@ -5,3 +5,11 @@ body {
 img {
   width: 10%;
 }
+
+table tr td {
+  border: 1px solid black;
+}
+
+button {
+  width: 20%;
+}
