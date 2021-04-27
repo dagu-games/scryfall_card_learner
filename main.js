@@ -80,9 +80,25 @@ var app = new Vue({
       "card4",
     ],
     correct_answer_index: 0,
+    question_order: [5,4,3,2,1,0],
     seed_string: "",
   },
   methods: {
+    shuffle: function(arr) {
+      var currentIndex = arr.length, temporaryValue, randomIndex;
+
+      while (0 !== currentIndex) {
+
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        temporaryValue = arr[currentIndex];
+        arr[currentIndex] = arr[randomIndex];
+        arr[randomIndex] = temporaryValue;
+      }
+
+      return arr;
+    },
     get_seed_string: function() {
       return this.seed_string + " lang:english";
     },
@@ -90,47 +106,65 @@ var app = new Vue({
       return this.hide_settings;
     },
     answer_question: function (answer_index) {
-      this.cards[this.current_card].attemps++;
+      this.cards[this.question_order[this.current_card]].attemps++;
       this.attempts++;
       if(answer_index == this.correct_answer_index){
-        this.cards[this.current_card].successes++;
+        this.cards[this.question_order[this.current_card]].successes++;
         this.successes++;
         this.current_card++;
         if(this.current_card == this.cards.length){
           this.current_card = 0;
           this.add_card();
         }
-        var new_correct_answer_index = Math.floor(Math.random() * 5);
-        var question_types = [
-          "name",
-          "mana_cost",
-          "type",
-          "oracle_text",
-          "art",
-        ];
-        var new_correct_answer_type = question_types[Math.floor(Math.random() * question_types.length)];
-
-        for(var i = 0; i < 5; i++){
-          if(i==new_correct_answer_index){
-            if(new_correct_answer_type == "name"){
-              this.current_question_options[i] = this.cards[current_card].name;
-            }
-            if(new_correct_answer_type == "mana_cost"){
-              this.current_question_options[i] = this.cards[current_card].mana_cost;
-            }
-            if(new_correct_answer_type == "type"){
-              this.current_question_options[i] = this.cards[current_card].type;
-            }
-            if(new_correct_answer_type == "oracle_text"){
-              this.current_question_options[i] = this.cards[current_card].oracle_text;
-            }
-            if(new_correct_answer_type == "art"){
-              this.current_question_options[i] = this.cards[current_card].art_link;
-            }
-          }
-        }
       }else{
         this.current_card = 0;
+      }
+      this.correct_answer_index = Math.floor(Math.random() * 5);
+      var question_types = [
+        "name",
+        "mana_cost",
+        "type",
+        "oracle_text",
+        "art_links",
+      ];
+      var new_question_type = question_types[Math.floor(Math.random() * question_types.length)];
+
+      var possible_answers = [];
+      for(var i = 0; i < this.cards.length; i++){
+        var found = false;
+        if(this.cards[i][new_question_type] == this.cards[this.question_order[this.current_card]][new_question_type]){
+          found = true;
+        }
+        for(var j = 0; j < possible_answers.length; j++){
+          if(possible_answers[j] == this.cards[i][new_question_type]){
+            found = true;
+          }
+        }
+        if(!found){
+          possible_answers.push(this.cards[i][new_question_type]);
+        }
+      }
+      this.shuffle(possible_answers);
+      for(var i = 0; i < 5; i++){
+        if(i==this.correct_answer_index){
+          if(new_question_type == "name"){
+            this.current_question_options[i] = this.cards[this.question_order[this.current_card]].name;
+          }
+          if(new_question_type == "mana_cost"){
+            this.current_question_options[i] = this.cards[this.question_order[this.current_card]].mana_cost;
+          }
+          if(new_question_type == "type"){
+            this.current_question_options[i] = this.cards[this.question_order[this.current_card]].type;
+          }
+          if(new_question_type == "oracle_text"){
+            this.current_question_options[i] = this.cards[this.question_order[this.current_card]].oracle_text;
+          }
+          if(new_question_type == "art"){
+            this.current_question_options[i] = this.cards[this.question_order[this.current_card]].art_link;
+          }
+        }else{
+          this.current_question_options[i] = possible_answers[i];
+        }
       }
     },
     toggle_settings: function () {
