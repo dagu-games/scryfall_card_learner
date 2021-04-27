@@ -337,11 +337,12 @@ var app = new Vue({
 
 
         if (Http.readyState == 4 && Http.status == 200) {
-          //console.log(Http.responseText);
+
           var response = JSON.parse(Http.responseText);
+          //console.log(response);
           this.cards = [];
           this.question_order = [];
-          for(var i = 0; i < 7; i++){
+          for(var i = 0; i < 10; i++){
             var tcard = {};
             if(response.data[i].card_faces == null){
               //a single faced card
@@ -416,35 +417,3 @@ var app = new Vue({
     },
   }
 });
-
-
-
-
-
-
-/*
-var scryfall_images = [];
-
-var get_card_image = function(name) {
-  var link = "";
-
-  for(var i = 0; i < scryfall_images.length; i++){
-    if(scryfall_images[i].name == name){
-      return scryfall_images[i].link;
-    }
-  }
-
-  const Http = new XMLHttpRequest();
-  const url='https://api.scryfall.com/cards/named?fuzzy=' + encodeURI(name);
-  Http.open("GET", url);
-  Http.send();
-
-  Http.onreadystatechange = (e) => {
-    console.log(Http.responseText)
-  }
-
-
-
-  //find link to given name
-  return link;
-};*/
