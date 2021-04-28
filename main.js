@@ -223,7 +223,7 @@ var app = new Vue({
       }else {
         query = this.seed_string + " lang:english";
       }
-      const url='https://api.scryfall.com/cards/search?order=released&unique=prints&dir=asc&include_extras=false&page=' + this.scryfall_page + '&q=' + encodeURI(query);
+      const url='https://api.scryfall.com/cards/search?order=released&unique=cards&dir=asc&include_extras=false&page=' + this.scryfall_page + '&q=' + encodeURI(query);
       Http.open("GET", url);
 
       Http.onreadystatechange = (e) => {
@@ -325,12 +325,12 @@ var app = new Vue({
     seed_cards: function () {
       const Http = new XMLHttpRequest();
       var query = "";
-      if(this.seed_string = ""){
+      if(this.seed_string == ""){
         query = "lang:english";
       }else {
         query = this.seed_string + " lang:english";
       }
-      const url='https://api.scryfall.com/cards/search?order=released&unique=prints&dir=asc&include_extras=false&page=' + 1 + '&q=' + encodeURI(query);
+      const url='https://api.scryfall.com/cards/search?order=released&unique=cards&dir=asc&include_extras=false&page=' + 1 + '&q=' + encodeURI(query);
       Http.open("GET", url);
 
       Http.onreadystatechange = (e) => {
