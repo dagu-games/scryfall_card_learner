@@ -89,6 +89,25 @@ var app = new Vue({
     this.onLoaded();
   },
   methods: {
+    clearData: function() {
+      localStorage.save_data = "";
+    },
+    saveData: function() {
+      var save_data = {
+        cards: this.cards,
+        question_order: this.question_order,
+        round: this.round,
+        scryfall_page: this.scryfall_page,
+        seed_string: this.seed_string,
+        successes: this.successes,
+        attempts: this.attempts,
+        current_card: this.current_card,
+        correct_answer_index: this.correct_answer_index,
+        current_question_type: this.current_question_type,
+        current_question_options: this.current_question_options,
+      };
+      localStorage.save_data = LZString.compressToBase64(JSON.stringify(save_data));
+    },
     refreshQuestions: function() {
       this.current_card = 0;
       this.shuffle(this.question_order);
@@ -116,7 +135,8 @@ var app = new Vue({
           possible_answers.push(this.cards[i][this.current_question_type]);
         }
       }
-      this.shuffle(possible_answers);
+      const levenSort = require('./lib/index.js');
+      levenSort(possible_answers, this.cards[this.question_order[this.current_card]][this.current_question_type]);
       var j = 0;
       for (var i = 0; i < 4; i++) {
         if (i == this.correct_answer_index) {
@@ -129,11 +149,32 @@ var app = new Vue({
     },
     onLoaded: function() {
       //try to load save file, if not there, seed the cards
+      // Store
+      if(localStorage.save_data == undefined || localStorage.save_data == ""){
+        localStorage.save_data = "";
+        this.seed_cards();
+
+
+      }else{
+
+        var save_data = JSON.parse(LZString.decompressFromBase64(localStorage.save_data));
+        this.cards = save_data.cards;
+        this.question_order = save_data.question_order;
+        this.round = save_data.round;
+        this.scryfall_page = save_data.scryfall_page;
+        this.seed_string = save_data.seed_string;
+        this.successes = save_data.successes;
+        this.attempts = save_data.attempts;
+        this.current_card = save_data.current_card;
+        this.correct_answer_index = save_data.correct_answer_index;
+        this.current_question_type = save_data.current_question_type;
+        this.current_question_options = save_data.current_question_options;
+      }
 
 
 
-      this.seed_cards();
-      this.refreshQuestions();
+
+
     },
     shuffle: function(arr) {
       var currentIndex = arr.length,
@@ -207,6 +248,8 @@ var app = new Vue({
           j++;
         }
       }
+
+      this.saveData();
     },
     toggle_settings: function() {
       if (app.hide_settings) {
@@ -313,6 +356,7 @@ var app = new Vue({
             this.cards.push(tcard);
             this.question_order.push(this.cards.length - 1);
             this.refreshQuestions();
+            this.saveData();
           } else {
             this.scryfall_page++;
             this.add_card();
@@ -409,6 +453,7 @@ var app = new Vue({
             //console.log(tcard);
           }
           this.refreshQuestions();
+          this.saveData();
         }
       }
 

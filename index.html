@@ -3,6 +3,7 @@
 
 <body>
   <script src="./lib/vue.js"></script>
+  <script language="javascript" src="./lib/lz-string.js"></script>
   <link rel="stylesheet" href="style.css">
 
 
@@ -18,7 +19,7 @@
       <div v-if="is_settings_hidden()">
         <div>
 
-          <table style="width:20%;">
+          <table style="width:30%;">
             <tr style="width:100%;">
               <td style="width:75%;">{{current_question_type!='name'? cards[question_order[current_card]].name : '???'}}</td>
               <td style="width:25%;">{{current_question_type!='mana_cost'? cards[question_order[current_card]].mana_cost : '???'}}</td>
@@ -80,6 +81,8 @@
           <input v-model="seed_string" placeholder="example: legal:modern">
           <button v-on:click="toggle_settings()">Close</button>
           <button v-on:click="seed_cards()">Seed Cards</button>
+
+          <button v-on:click="clearData()">Delete Save Data</button>
           <br>
         </div>
       </div>
