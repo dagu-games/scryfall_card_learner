@@ -15,6 +15,10 @@
       <br>
       Current Round: {{round+1}}
       <br>
+      Current Card: {{current_card+1}} / {{cards.length}}
+      <br>
+      Correct Answer: {{correct_answer_index+1}}
+      <br>
       <br>
       <div v-if="is_settings_hidden()">
         <div>
@@ -81,13 +85,24 @@
           <input v-model="seed_string" placeholder="example: legal:modern">
           <button v-on:click="toggle_settings()">Close</button>
           <button v-on:click="seed_cards()">Seed Cards</button>
-
+          <button v-on:click="downloadData()">Download Save Data</button>
+          <br>
+          <div>
+            Load save file:
+            <label for="input-file">Specify a file:</label><br>
+            <input type="file" id="input-file" v-on:change="uploadData($event)">
+          </div>
+          <br>
+          <br>
+          <br>
           <button v-on:click="clearData()">Delete Save Data</button>
+
           <br>
         </div>
       </div>
     </div>
   </div>
+
 
   <script src="./main.js"></script>
 </body>

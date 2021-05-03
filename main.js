@@ -83,7 +83,7 @@ var app = new Vue({
     seed_string: "",
     round: 0,
     scryfall_page: 1,
-
+    file_text: "",
   },
   mounted: function() {
     this.onLoaded();
@@ -91,6 +91,43 @@ var app = new Vue({
   methods: {
     clearData: function() {
       localStorage.save_data = "";
+    },
+    uploadData: function(event) {
+      var placeFileContent = function(target, file) {
+        readFileContent(file).then(content => {
+          localStorage.save_data = content;
+          app.onLoaded();
+        }).catch(error => console.log(error))
+      };
+
+      var readFileContent = function(file) {
+        const reader = new FileReader()
+        return new Promise((resolve, reject) => {
+          reader.onload = event => resolve(event.target.result)
+          reader.onerror = error => reject(error)
+          reader.readAsText(file)
+        })
+      };
+
+      const input = event.target
+      if ('files' in input && input.files.length > 0) {
+        placeFileContent(
+          document.getElementById('content-target'),
+          input.files[0])
+      }
+    },
+    downloadData: function() {
+      var str = localStorage.save_data;
+      var element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(str));
+      element.setAttribute('download', "cards_save_file.txt");
+
+      element.style.display = 'none';
+      document.body.appendChild(element);
+
+      element.click();
+
+      document.body.removeChild(element);
     },
     saveData: function() {
       var save_data = {
@@ -110,7 +147,6 @@ var app = new Vue({
     },
     refreshQuestions: function() {
       this.current_card = 0;
-      this.shuffle(this.question_order);
       this.correct_answer_index = Math.floor(Math.random() * 4);
       var question_types = [
         "name",
@@ -135,8 +171,25 @@ var app = new Vue({
           possible_answers.push(this.cards[i][this.current_question_type]);
         }
       }
-      const levenSort = require('./lib/index.js');
-      levenSort(possible_answers, this.cards[this.question_order[this.current_card]][this.current_question_type]);
+      console.log(possible_answers);
+      possible_answers.sort((a, b) => {
+        var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
+        var dis_a = app.calculateDifference(a,correct_ans);
+        var dis_b = app.calculateDifference(b,correct_ans);
+
+        if(dis_a < dis_b){
+          return -1;
+        }
+        if(dis_a > dis_b){
+          return 1;
+        }
+        return 0;
+      });
+      console.log(possible_answers);
+      //TODO
+      //const levenSort = require('leven-sort');
+      //levenSort(possible_answers, this.cards[this.question_order[this.current_card]][this.current_question_type]);
+      //this.shuffle(possible_answers);
       var j = 0;
       for (var i = 0; i < 4; i++) {
         if (i == this.correct_answer_index) {
@@ -148,15 +201,10 @@ var app = new Vue({
       }
     },
     onLoaded: function() {
-      //try to load save file, if not there, seed the cards
-      // Store
-      if(localStorage.save_data == undefined || localStorage.save_data == ""){
+      if (localStorage.save_data == undefined || localStorage.save_data == "") {
         localStorage.save_data = "";
         this.seed_cards();
-
-
-      }else{
-
+      } else {
         var save_data = JSON.parse(LZString.decompressFromBase64(localStorage.save_data));
         this.cards = save_data.cards;
         this.question_order = save_data.question_order;
@@ -170,11 +218,6 @@ var app = new Vue({
         this.current_question_type = save_data.current_question_type;
         this.current_question_options = save_data.current_question_options;
       }
-
-
-
-
-
     },
     shuffle: function(arr) {
       var currentIndex = arr.length,
@@ -199,7 +242,7 @@ var app = new Vue({
       return this.hide_settings;
     },
     answer_question: function(answer_index) {
-      this.cards[this.question_order[this.current_card]].attemps++;
+      this.cards[this.question_order[this.current_card]].attempts++;
       this.attempts++;
       if (answer_index == this.correct_answer_index) {
         this.cards[this.question_order[this.current_card]].successes++;
@@ -212,7 +255,7 @@ var app = new Vue({
         }
       } else {
         this.current_card = 0;
-        this.shuffle(this.question_order);
+        this.refreshQuestions();
       }
       this.correct_answer_index = Math.floor(Math.random() * 4);
       var question_types = [
@@ -238,7 +281,21 @@ var app = new Vue({
           possible_answers.push(this.cards[i][this.current_question_type]);
         }
       }
-      this.shuffle(possible_answers);
+      console.log(possible_answers);
+      possible_answers.sort((a, b) => {
+        var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
+        var dis_a = app.calculateDifference(a,correct_ans);
+        var dis_b = app.calculateDifference(b,correct_ans);
+
+        if(dis_a < dis_b){
+          return -1;
+        }
+        if(dis_a > dis_b){
+          return 1;
+        }
+        return 0;
+      });
+      console.log(possible_answers);
       var j = 0;
       for (var i = 0; i < 4; i++) {
         if (i == this.correct_answer_index) {
@@ -460,5 +517,27 @@ var app = new Vue({
       Http.send();
 
     },
-  }
+    calculateDifference: function(str1, str2) {
+
+      const track = Array(str2.length + 1).fill(null).map(() =>
+        Array(str1.length + 1).fill(null));
+      for (let i = 0; i <= str1.length; i += 1) {
+        track[0][i] = i;
+      }
+      for (let j = 0; j <= str2.length; j += 1) {
+        track[j][0] = j;
+      }
+      for (let j = 1; j <= str2.length; j += 1) {
+        for (let i = 1; i <= str1.length; i += 1) {
+          const indicator = str1[i - 1] === str2[j - 1] ? 0 : 1;
+          track[j][i] = Math.min(
+            track[j][i - 1] + 1, // deletion
+            track[j - 1][i] + 1, // insertion
+            track[j - 1][i - 1] + indicator, // substitution
+          );
+        }
+      }
+      return track[str2.length][str1.length];
+    },
+  },
 });
