@@ -10,91 +10,125 @@
   <div id="app">
     <div>
       <div class="top_left_bar">
-      <button v-on:click="toggle_settings()">Toggle Settings</button>
-      <br>
-      Current Question: {{current_question_type}}
-      <br>
-      Current Round: {{round+1}}
-      <br>
-      Current Card: {{current_card+1}} / {{cards.length}}
-      <br>
-      Correct Answer: {{correct_answer_index+1}}
+        <button v-if="is_settings_hidden()" v-on:click="toggle_settings()">Open Settings</button>
+        <button v-if="!is_settings_hidden()" v-on:click="toggle_settings()">Close Settings</button>
+        <br>
+        Current Question: {{current_question_type}}
+        <br>
+        Current Round: {{round+1}}
+        <br>
+        Current Card: {{current_card+1}} / {{cards.length}}
+        <br>
+        Correct Answer: {{correct_answer_index+1}}
 
-      <div v-if="!is_settings_hidden()">
-        <div>
-          <input v-model="seed_string" placeholder="example: legal:modern">
-          <input v-model="seed_number" placeholder="example: 100">
-          <button v-on:click="toggle_settings()">Close</button>
-          <button v-on:click="seed_cards()">Seed Cards</button>
-          <button v-on:click="downloadData()">Download Save Data</button>
-          <br>
+        <div v-if="!is_settings_hidden()">
           <div>
-            Load save file:
-            <label for="input-file">Specify a file:</label><br>
-            <input type="file" id="input-file" v-on:change="uploadData($event)">
-          </div>
-          <br>
-          <br>
-          <br>
-          <button v-on:click="clearData()">Delete Save Data</button>
 
-          <br>
+            <br>
+            Seed String
+            <input v-model="seed_string" placeholder="example: legal:modern">
+            Seed Number
+            <input v-model="seed_number" placeholder="example: 100">
+            <button v-on:click="seed_cards()">Seed Cards</button>
+            <br>
+            <br>
+            <button v-on:click="downloadData()">Download Save Data</button>
+            <br>
+            <br>
+            <div>
+              <label for="input-file">Load save file:</label><br>
+              <input type="file" id="input-file" v-on:change="uploadData($event)">
+            </div>
+
+            <br>
+            <br>
+            <br>
+            <button v-on:click="clearData()">Delete Save Data</button>
+
+            <br>
+          </div>
         </div>
       </div>
-      </div>
-          <table class="centered" style="width:30%;">
-            <tr style="width:100%;">
-              <td style="width:75%;">{{current_question_type!='name'? cards[question_order[current_card]].name : '???'}}</td>
-              <td style="width:25%;">{{current_question_type!='mana_cost'? cards[question_order[current_card]].mana_cost : '???'}}</td>
-            </tr>
-            <tr style="width:100%;">
-              <td colspan="2"><img v-for="art_link in cards[question_order[current_card]].art_links" style="width:100%;" :src="art_link" :alt="'oops'" /></td>
-            </tr>
-            <tr style="width:100%;">
-              <td colspan="2">{{current_question_type!='type'? cards[question_order[current_card]].type : '???'}}</td>
-            </tr>
-            <tr style="width:100%;">
-              <td colspan="2">{{current_question_type!='oracle_text'? cards[question_order[current_card]].oracle_text : '???'}}</td>
-            </tr>
-          </table>
 
-
-          <table class="centered" style="max-width:80%;">
-            <tr>
-              <td>
-                <button class="centered" v-on:click="answer_question(0)">{{current_question_options[0]}}</button>
-              </td>
-              <td>
-                <button class="centered" v-on:click="answer_question(1)">{{current_question_options[1]}}</button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <button class="centered" v-on:click="answer_question(2)">{{current_question_options[2]}}</button>
-              </td>
-              <td>
-                <button class="centered" v-on:click="answer_question(3)">{{current_question_options[3]}}</button>
-              </td>
-            </tr>
-          </table>
-
-
-
-
-          <div class="bottom_bar">
+      <div v-if="!showResults()">
+        <div class="question_container">
+          <div class="left_section">
+            <h2>
+              {{ current_question_type == "name" ? "What is the name of this card?" : ""}}
+              {{ current_question_type == "type" ? "What is this card's type?" : ""}}
+              {{ current_question_type == "mana_cost" ? "What is the mana cost for this card?" : ""}}
+              {{ current_question_type == "oracle_text" ? "What is the rules text for this card?" : ""}}
+            </h2>
             <table>
-                <tr>
-                  <td v-for="tcard in previous_cards">
-                    {{tcard.correct ? "Correct" : "Wrong"}}
-                  </td>
-                </tr>
-                <tr>
-                  <td v-for="tcard in previous_cards">
-                    <img v-for="card_link in tcard.links" :src="card_link" :alt="'oops'" />
-                  </td>
-                </tr>
+              <tr style="width:100%;">
+                <td style="width:75%;">{{current_question_type!='name'? cards[question_order[current_card]].name : '???'}}</td>
+                <td style="width:25%;">{{current_question_type!='mana_cost'? cards[question_order[current_card]].mana_cost : '???'}}</td>
+              </tr>
+              <tr style="width:100%;">
+                <td colspan="2"><img v-for="art_link in cards[question_order[current_card]].art_links" style="width:100%;" :src="art_link" :alt="'oops'" /></td>
+              </tr>
+              <tr style="width:100%;">
+                <td colspan="2">{{current_question_type!='type'? cards[question_order[current_card]].type : '???'}}</td>
+              </tr>
+              <tr style="width:100%;">
+                <td colspan="2">{{current_question_type!='oracle_text'? cards[question_order[current_card]].oracle_text : '???'}}</td>
+              </tr>
+            </table>
+
+          </div>
+          <div class="right_section">
+            <table>
+              <tr>
+                <td>
+                  <button class="centered" v-on:click="answer_question(0)">{{current_question_options[0]}}</button>
+                </td>
+                <td>
+                  <button class="centered" v-on:click="answer_question(1)">{{current_question_options[1]}}</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <button class="centered" v-on:click="answer_question(2)">{{current_question_options[2]}}</button>
+                </td>
+                <td>
+                  <button class="centered" v-on:click="answer_question(3)">{{current_question_options[3]}}</button>
+                </td>
+              </tr>
             </table>
           </div>
+        </div>
+
+
+
+
+
+      </div>
+      <div v-if="showResults()">
+        <div class="results_container">
+          <h2>{{previous_cards[0].correct ? "Correct" : "Wrong"}}</h2>
+          <img v-for="card_link in previous_cards[0].links" :src="card_link" :alt="'oops'" />
+          <button v-on:click="dismissResults()">Next Question</button>
+        </div>
+
+      </div>
+
+
+
+
+      <div class="bottom_bar">
+        <table>
+          <tr>
+            <td v-for="tcard in previous_cards">
+              {{tcard.correct ? "Correct" : "Wrong"}}
+            </td>
+          </tr>
+          <tr>
+            <td v-for="tcard in previous_cards">
+              <img v-for="card_link in tcard.links" :src="card_link" :alt="'oops'" />
+            </td>
+          </tr>
+        </table>
+      </div>
 
 
 

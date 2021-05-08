@@ -86,6 +86,7 @@ var app = new Vue({
     scryfall_page: 1,
     file_text: "",
     previous_cards: [],
+    show_results: false,
   },
   mounted: function() {
     this.onLoaded();
@@ -93,6 +94,12 @@ var app = new Vue({
   methods: {
     clearData: function() {
       localStorage.save_data = "";
+    },
+    showResults: function() {
+      return this.show_results;
+    },
+    dismissResults: function() {
+      this.show_results = false;
     },
     uploadData: function(event) {
       var placeFileContent = function(target, file) {
@@ -151,6 +158,7 @@ var app = new Vue({
     refreshQuestions: function() {
       this.current_card = 0;
       this.correct_answer_index = Math.floor(Math.random() * 4);
+      this.shuffle(this.question_order);
       var question_types = [
         "name",
         "mana_cost",
@@ -174,7 +182,7 @@ var app = new Vue({
           possible_answers.push(this.cards[i][this.current_question_type]);
         }
       }
-      console.log(possible_answers);
+      //console.log(possible_answers);
       possible_answers.sort((a, b) => {
         var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
         var dis_a = app.calculateDifference(a,correct_ans);
@@ -188,7 +196,7 @@ var app = new Vue({
         }
         return 0;
       });
-      console.log(possible_answers);
+      //console.log(possible_answers);
       //TODO
       //const levenSort = require('leven-sort');
       //levenSort(possible_answers, this.cards[this.question_order[this.current_card]][this.current_question_type]);
@@ -248,7 +256,7 @@ var app = new Vue({
     answer_question: function(answer_index) {
       this.cards[this.question_order[this.current_card]].attempts++;
       this.attempts++;
-
+      this.show_results = true;
       this.previous_cards.unshift({
         links: this.cards[this.question_order[this.current_card]].card_links,
         correct: answer_index == this.correct_answer_index,
@@ -295,7 +303,7 @@ var app = new Vue({
           possible_answers.push(this.cards[i][this.current_question_type]);
         }
       }
-      console.log(possible_answers);
+      //console.log(possible_answers);
       possible_answers.sort((a, b) => {
         var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
         var dis_a = app.calculateDifference(a,correct_ans);
@@ -309,7 +317,7 @@ var app = new Vue({
         }
         return 0;
       });
-      console.log(possible_answers);
+      //console.log(possible_answers);
       var j = 0;
       for (var i = 0; i < 4; i++) {
         if (i == this.correct_answer_index) {
