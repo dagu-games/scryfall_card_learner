@@ -370,7 +370,7 @@ var app = new Vue({
               tcard.id = response.data[i].id;
               tcard.mana_cost = response.data[i].mana_cost;
               tcard.type = response.data[i].type_line;
-              tcard.oracle_text = response.data[i].oracle_text.replace(tcard.name, "[CARD NAME]");
+              tcard.oracle_text = response.data[i].oracle_text.replaceAll(tcard.name, "[CARD NAME]");
               if (response.data[i].power != null) {
                 tcard.oracle_text += "\n" + response.data[i].power + "/" + response.data[i].toughness;
               }
@@ -390,7 +390,7 @@ var app = new Vue({
               tcard.name = response.data[i].card_faces[0].name;
               tcard.mana_cost = response.data[i].card_faces[0].mana_cost;
               tcard.type = response.data[i].card_faces[0].type_line;
-              tcard.oracle_text = response.data[i].card_faces[0].oracle_text.replace(response.data[i].card_faces[0].name, "[CARD NAME]");
+              tcard.oracle_text = response.data[i].card_faces[0].oracle_text.replaceAll(response.data[i].card_faces[0].name, "[CARD NAME]");
               if (response.data[i].card_faces[0].power != null) {
                 tcard.oracle_text += "\n" + response.data[i].card_faces[0].power + "/" + response.data[i].card_faces[0].toughness;
               }
@@ -408,7 +408,7 @@ var app = new Vue({
                 tcard.name += "  //  " + response.data[i].card_faces[j].name;
                 tcard.mana_cost += "  //  " + response.data[i].card_faces[j].mana_cost;
                 tcard.type += "  //  " + response.data[i].card_faces[j].type_line;
-                tcard.oracle_text += "  //  " + response.data[i].card_faces[j].oracle_text.replace(response.data[i].card_faces[j].name, "[CARD NAME]");;
+                tcard.oracle_text += "  //  " + response.data[i].card_faces[j].oracle_text.replaceAll(response.data[i].card_faces[j].name, "[CARD NAME]");;
                 if (response.data[i].card_faces[j].power != null) {
                   tcard.oracle_text += "\n" + response.data[i].card_faces[j].power + "/" + response.data[i].card_faces[j].toughness;
                 }
@@ -465,7 +465,7 @@ var app = new Vue({
               tcard.id = response.data[i].id;
               tcard.mana_cost = response.data[i].mana_cost;
               tcard.type = response.data[i].type_line;
-              tcard.oracle_text = response.data[i].oracle_text.replace(tcard.name, "[CARD NAME]");
+              tcard.oracle_text = response.data[i].oracle_text.replaceAll(tcard.name, "[CARD NAME]");
               if (response.data[i].power != null) {
                 tcard.oracle_text += "\n" + response.data[i].power + "/" + response.data[i].toughness;
               }
@@ -485,7 +485,7 @@ var app = new Vue({
               tcard.name = response.data[i].card_faces[0].name;
               tcard.mana_cost = response.data[i].card_faces[0].mana_cost;
               tcard.type = response.data[i].card_faces[0].type_line;
-              tcard.oracle_text = response.data[i].card_faces[0].oracle_text.replace(response.data[i].card_faces[0].name, "[CARD NAME]");
+              tcard.oracle_text = response.data[i].card_faces[0].oracle_text.replaceAll(response.data[i].card_faces[0].name, "[CARD NAME]");
               if (response.data[i].card_faces[0].power != null) {
                 tcard.oracle_text += "\n" + response.data[i].card_faces[0].power + "/" + response.data[i].card_faces[0].toughness;
               }
@@ -503,7 +503,7 @@ var app = new Vue({
                 tcard.name += "  //  " + response.data[i].card_faces[j].name;
                 tcard.mana_cost += "  //  " + response.data[i].card_faces[j].mana_cost;
                 tcard.type += "  //  " + response.data[i].card_faces[j].type_line;
-                tcard.oracle_text += "  //  " + response.data[i].card_faces[j].oracle_text.replace(response.data[i].card_faces[j].name, "[CARD NAME]");;
+                tcard.oracle_text += "  //  " + response.data[i].card_faces[j].oracle_text.replaceAll(response.data[i].card_faces[j].name, "[CARD NAME]");;
                 if (response.data[i].card_faces[j].power != null) {
                   tcard.oracle_text += "\n" + response.data[i].card_faces[j].power + "/" + response.data[i].card_faces[j].toughness;
                 }
