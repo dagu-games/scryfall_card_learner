@@ -70,7 +70,7 @@ button {
 
 .question_container {
   height: 70vh;
-  top:5vh;
+  top:0;
   width: 70vw;
   left: 20vw;
   position: absolute;
