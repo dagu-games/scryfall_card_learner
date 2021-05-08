@@ -9,6 +9,7 @@
 
   <div id="app">
     <div>
+      <div class="top_left_bar">
       <button v-on:click="toggle_settings()">Toggle Settings</button>
       <br>
       Current Question: {{current_question_type}}
@@ -18,71 +19,11 @@
       Current Card: {{current_card+1}} / {{cards.length}}
       <br>
       Correct Answer: {{correct_answer_index+1}}
-      <br>
-      <br>
-      <div v-if="is_settings_hidden()">
-        <div>
 
-          <table style="width:30%;">
-            <tr style="width:100%;">
-              <td style="width:75%;">{{current_question_type!='name'? cards[question_order[current_card]].name : '???'}}</td>
-              <td style="width:25%;">{{current_question_type!='mana_cost'? cards[question_order[current_card]].mana_cost : '???'}}</td>
-            </tr>
-            <tr style="width:100%;">
-              <td colspan="2"><img v-for="art_link in cards[question_order[current_card]].art_links" style="width:100%;" :src="art_link" :alt="'oops'" /></td>
-            </tr>
-            <tr style="width:100%;">
-              <td colspan="2">{{current_question_type!='type'? cards[question_order[current_card]].type : '???'}}</td>
-            </tr>
-            <tr style="width:100%;">
-              <td colspan="2">{{current_question_type!='oracle_text'? cards[question_order[current_card]].oracle_text : '???'}}</td>
-            </tr>
-          </table>
-
-          <br>
-          <br>
-          <button v-on:click="answer_question(0)">{{current_question_options[0]}}</button>
-          <br>
-          <button v-on:click="answer_question(1)">{{current_question_options[1]}}</button>
-          <br>
-          <button v-on:click="answer_question(2)">{{current_question_options[2]}}</button>
-          <br>
-          <button v-on:click="answer_question(3)">{{current_question_options[3]}}</button>
-          <br>
-
-
-          <div style="float:left;">
-            <div v-if="((current_card-1) >= 0)">
-              <div>
-                <img v-for="card_link in cards[question_order[current_card-1]].card_links" :src="card_link" :alt="'oops'" />
-              </div>
-            </div>
-            <div v-if="((current_card-2) >= 0)">
-              <div>
-                <img v-for="card_link in cards[question_order[current_card-2]].card_links" :src="card_link" :alt="'oops'" />
-              </div>
-            </div>
-            <div v-if="((current_card-3) >= 0)">
-              <div>
-                <img v-for="card_link in cards[question_order[current_card-3]].card_links" :src="card_link" :alt="'oops'" />
-              </div>
-            </div>
-            <div v-if="((current_card-4) >= 0)">
-              <div>
-                <img v-for="card_link in cards[question_order[current_card-4]].card_links" :src="card_link" :alt="'oops'" />
-              </div>
-            </div>
-            <div v-if="((current_card-5) >= 0)">
-              <div>
-                <img v-for="card_link in cards[question_order[current_card-5]].card_links" :src="card_link" :alt="'oops'" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div v-if="!is_settings_hidden()">
         <div>
           <input v-model="seed_string" placeholder="example: legal:modern">
+          <input v-model="seed_number" placeholder="example: 100">
           <button v-on:click="toggle_settings()">Close</button>
           <button v-on:click="seed_cards()">Seed Cards</button>
           <button v-on:click="downloadData()">Download Save Data</button>
@@ -100,6 +41,63 @@
           <br>
         </div>
       </div>
+      </div>
+          <table class="centered" style="width:30%;">
+            <tr style="width:100%;">
+              <td style="width:75%;">{{current_question_type!='name'? cards[question_order[current_card]].name : '???'}}</td>
+              <td style="width:25%;">{{current_question_type!='mana_cost'? cards[question_order[current_card]].mana_cost : '???'}}</td>
+            </tr>
+            <tr style="width:100%;">
+              <td colspan="2"><img v-for="art_link in cards[question_order[current_card]].art_links" style="width:100%;" :src="art_link" :alt="'oops'" /></td>
+            </tr>
+            <tr style="width:100%;">
+              <td colspan="2">{{current_question_type!='type'? cards[question_order[current_card]].type : '???'}}</td>
+            </tr>
+            <tr style="width:100%;">
+              <td colspan="2">{{current_question_type!='oracle_text'? cards[question_order[current_card]].oracle_text : '???'}}</td>
+            </tr>
+          </table>
+
+
+          <table class="centered" style="max-width:80%;">
+            <tr>
+              <td>
+                <button class="centered" v-on:click="answer_question(0)">{{current_question_options[0]}}</button>
+              </td>
+              <td>
+                <button class="centered" v-on:click="answer_question(1)">{{current_question_options[1]}}</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <button class="centered" v-on:click="answer_question(2)">{{current_question_options[2]}}</button>
+              </td>
+              <td>
+                <button class="centered" v-on:click="answer_question(3)">{{current_question_options[3]}}</button>
+              </td>
+            </tr>
+          </table>
+
+
+
+
+          <div class="bottom_bar">
+            <table>
+                <tr>
+                  <td v-for="tcard in previous_cards">
+                    {{tcard.correct ? "Correct" : "Wrong"}}
+                  </td>
+                </tr>
+                <tr>
+                  <td v-for="tcard in previous_cards">
+                    <img v-for="card_link in tcard.links" :src="card_link" :alt="'oops'" />
+                  </td>
+                </tr>
+            </table>
+          </div>
+
+
+
     </div>
   </div>
 

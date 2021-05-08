@@ -81,9 +81,11 @@ var app = new Vue({
     correct_answer_index: 0,
     question_order: [5, 4, 3, 2, 1, 0],
     seed_string: "",
+    seed_number: 100,
     round: 0,
     scryfall_page: 1,
     file_text: "",
+    previous_cards: [],
   },
   mounted: function() {
     this.onLoaded();
@@ -142,6 +144,7 @@ var app = new Vue({
         correct_answer_index: this.correct_answer_index,
         current_question_type: this.current_question_type,
         current_question_options: this.current_question_options,
+        previous_cards: this.previous_cards,
       };
       localStorage.save_data = LZString.compressToBase64(JSON.stringify(save_data));
     },
@@ -217,6 +220,7 @@ var app = new Vue({
         this.correct_answer_index = save_data.correct_answer_index;
         this.current_question_type = save_data.current_question_type;
         this.current_question_options = save_data.current_question_options;
+        this.previous_cards = save_data.previous_cards;
       }
     },
     shuffle: function(arr) {
@@ -244,6 +248,16 @@ var app = new Vue({
     answer_question: function(answer_index) {
       this.cards[this.question_order[this.current_card]].attempts++;
       this.attempts++;
+
+      this.previous_cards.unshift({
+        links: this.cards[this.question_order[this.current_card]].card_links,
+        correct: answer_index == this.correct_answer_index,
+      });
+
+      if(this.previous_cards.length > 5){
+        this.previous_cards.splice(this.previous_cards.length - 1);
+      }
+
       if (answer_index == this.correct_answer_index) {
         this.cards[this.question_order[this.current_card]].successes++;
         this.successes++;
@@ -443,7 +457,7 @@ var app = new Vue({
           //console.log(response);
           this.cards = [];
           this.question_order = [];
-          for (var i = 0; i < 10; i++) {
+          for (var i = 0; i < app.seed_number; i++) {
             var tcard = {};
             if (response.data[i].card_faces == null) {
               //a single faced card
