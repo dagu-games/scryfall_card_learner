@@ -9,6 +9,12 @@
 
   <div id="app">
     <div>
+      <div class="top_bar">
+        {{Math.round((current_card / cards.length)*100)}}%
+        <div class="progress_bar_back">
+          <div class="progress_bar" v-bind:style="{ width: getProgress + '%' }"></div>
+        </div><br>
+      </div>
       <div class="top_left_bar">
         <button v-if="is_settings_hidden()" v-on:click="toggle_settings()">Open Settings</button>
         <button v-if="!is_settings_hidden()" v-on:click="toggle_settings()">Close Settings</button>

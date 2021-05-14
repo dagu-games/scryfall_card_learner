@@ -44,6 +44,31 @@ button {
   position: absolute;
 }
 
+.top_bar {
+  width: 75%;
+  top: 0;
+  right: 0;
+  position: absolute;
+  height:2%;
+}
+
+.progress_bar {
+  background-color: gray;
+  height:100%;
+  position:absolute;
+  left:0;
+  top:0;
+}
+
+.progress_bar_back {
+  background-color: lightgrey;
+  height:100%;
+  width:95%;
+  position:absolute;
+  right:0;
+  top:0;
+}
+
 .container {
   width: 100%;
   height: 100%;

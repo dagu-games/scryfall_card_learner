@@ -91,6 +91,11 @@ var app = new Vue({
   mounted: function() {
     this.onLoaded();
   },
+  computed: {
+    getProgress: function() {
+      return Math.round((this.current_card / this.cards.length)*95);
+    },
+  },
   methods: {
     clearData: function() {
       localStorage.save_data = "";
