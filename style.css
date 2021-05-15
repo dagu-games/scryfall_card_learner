@@ -3,48 +3,52 @@ body {
 }
 
 button {
-	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
-	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
-	box-shadow:inset 0px 1px 0px 0px #ffffff;
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );
-	background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
-	background-color:#ededed;
-	-webkit-border-top-left-radius:6px;
-	-moz-border-radius-topleft:6px;
-	border-top-left-radius:6px;
-	-webkit-border-top-right-radius:6px;
-	-moz-border-radius-topright:6px;
-	border-top-right-radius:6px;
-	-webkit-border-bottom-right-radius:6px;
-	-moz-border-radius-bottomright:6px;
-	border-bottom-right-radius:6px;
-	-webkit-border-bottom-left-radius:6px;
-	-moz-border-radius-bottomleft:6px;
-	border-bottom-left-radius:6px;
-text-indent:0;
-	border:1px solid #dcdcdc;
-	display:inline-block;
-	color:#000000;
-	font-family:Arial;
-	font-size:15px;
-	font-weight:bold;
-	font-style:normal;
-	text-decoration:none;
-	text-align:center;
-	text-shadow:0px 1px 0px #ffffff;
-}button:hover {
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
-	background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
-	background-color:#dfdfdf;
-}button:active {
-	position:relative;
-	top:1px;
+  -moz-box-shadow: inset 0px 1px 0px 0px #ffffff;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #ffffff;
+  box-shadow: inset 0px 1px 0px 0px #ffffff;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf));
+  background: -moz-linear-gradient(center top, #ededed 5%, #dfdfdf 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
+  background-color: #ededed;
+  -webkit-border-top-left-radius: 6px;
+  -moz-border-radius-topleft: 6px;
+  border-top-left-radius: 6px;
+  -webkit-border-top-right-radius: 6px;
+  -moz-border-radius-topright: 6px;
+  border-top-right-radius: 6px;
+  -webkit-border-bottom-right-radius: 6px;
+  -moz-border-radius-bottomright: 6px;
+  border-bottom-right-radius: 6px;
+  -webkit-border-bottom-left-radius: 6px;
+  -moz-border-radius-bottomleft: 6px;
+  border-bottom-left-radius: 6px;
+  text-indent: 0;
+  border: 1px solid #dcdcdc;
+  display: inline-block;
+  color: #000000;
+  font-family: Arial;
+  font-size: 15px;
+  font-weight: bold;
+  font-style: normal;
+  text-decoration: none;
+  text-align: center;
+  text-shadow: 0px 1px 0px #ffffff;
+}
+
+button:hover {
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed));
+  background: -moz-linear-gradient(center top, #dfdfdf 5%, #ededed 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
+  background-color: #dfdfdf;
+}
+
+button:active {
+  position: relative;
+  top: 1px;
 }
 
 .oracle_text_option {
-  min-width:20vw;
+  min-width: 20vw;
 }
 
 td {
@@ -55,10 +59,7 @@ td {
   margin: auto;
 }
 
-button {
-
-}
-
+button {}
 
 .bottom_bar {
   width: 90vw;
@@ -84,31 +85,30 @@ button {
   top: 0;
   right: 0;
   position: absolute;
-  height:2%;
+  height: 2%;
 }
 
 .progress_bar {
   background-color: gray;
-  height:100%;
-  position:absolute;
-  left:0;
-  top:0;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .progress_bar_back {
   background-color: lightgrey;
-  height:100%;
-  width:95%;
-  position:absolute;
-  right:0;
-  top:0;
+  height: 100%;
+  width: 95%;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 .container {
   width: 100%;
   height: 100%;
 }
-
 
 .results_container {
   width: 70vw;
@@ -121,7 +121,6 @@ button {
 
 .results_container img {
   height: 100%;
-
 }
 
 .results_container button {
@@ -130,11 +129,10 @@ button {
 
 .question_container {
   height: 70vh;
-  top:0;
+  top: 0;
   width: 70vw;
   left: 20vw;
   position: absolute;
-
 }
 
 .left_section {

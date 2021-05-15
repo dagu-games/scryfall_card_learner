@@ -65,7 +65,6 @@ var cards = [{
 var app = new Vue({
   el: '#app',
   data: {
-    message: 'Welcome!',
     cards: cards,
     current_card: 0,
     successes: 0,
@@ -87,13 +86,14 @@ var app = new Vue({
     file_text: "",
     previous_cards: [],
     show_results: false,
+    add_count: 0,
   },
   mounted: function() {
     this.onLoaded();
   },
   computed: {
     getProgress: function() {
-      return Math.round((this.current_card / this.cards.length)*95);
+      return Math.round((this.current_card / this.cards.length) * 95);
     },
   },
   methods: {
@@ -190,13 +190,13 @@ var app = new Vue({
       //console.log(possible_answers);
       possible_answers.sort((a, b) => {
         var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
-        var dis_a = app.calculateDifference(a,correct_ans);
-        var dis_b = app.calculateDifference(b,correct_ans);
+        var dis_a = app.calculateDifference(a, correct_ans);
+        var dis_b = app.calculateDifference(b, correct_ans);
 
-        if(dis_a < dis_b){
+        if (dis_a < dis_b) {
           return -1;
         }
-        if(dis_a > dis_b){
+        if (dis_a > dis_b) {
           return 1;
         }
         return 0;
@@ -267,7 +267,7 @@ var app = new Vue({
         correct: answer_index == this.correct_answer_index,
       });
 
-      if(this.previous_cards.length > 5){
+      if (this.previous_cards.length > 5) {
         this.previous_cards.splice(this.previous_cards.length - 1);
       }
 
@@ -312,13 +312,13 @@ var app = new Vue({
       //console.log(possible_answers);
       possible_answers.sort((a, b) => {
         var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
-        var dis_a = app.calculateDifference(a,correct_ans);
-        var dis_b = app.calculateDifference(b,correct_ans);
+        var dis_a = app.calculateDifference(a, correct_ans);
+        var dis_b = app.calculateDifference(b, correct_ans);
 
-        if(dis_a < dis_b){
+        if (dis_a < dis_b) {
           return -1;
         }
-        if(dis_a > dis_b){
+        if (dis_a > dis_b) {
           return 1;
         }
         return 0;
@@ -442,6 +442,11 @@ var app = new Vue({
             this.question_order.push(this.cards.length - 1);
             this.refreshQuestions();
             this.saveData();
+            this.add_count--;
+            if (this.add_count > 0) {
+              this.add_card();
+            }
+
           } else {
             this.scryfall_page++;
             this.add_card();
@@ -471,7 +476,8 @@ var app = new Vue({
           //console.log(response);
           this.cards = [];
           this.question_order = [];
-          for (var i = 0; i < app.seed_number; i++) {
+          var t_seed_num = app.seed_number < response.data.length ? app.seed_number : response.data.length;
+          for (var i = 0; i < t_seed_num; i++) {
             var tcard = {};
             if (response.data[i].card_faces == null) {
               //a single faced card
@@ -539,6 +545,10 @@ var app = new Vue({
           }
           this.refreshQuestions();
           this.saveData();
+          if (this.cards.length < this.seed_number) {
+            this.add_count = this.seed_number - this.cards.length;
+            this.add_card();
+          }
         }
       }
 
