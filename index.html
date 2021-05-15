@@ -19,8 +19,6 @@
         <button v-if="is_settings_hidden()" v-on:click="toggle_settings()">Open Settings</button>
         <button v-if="!is_settings_hidden()" v-on:click="toggle_settings()">Close Settings</button>
         <br>
-        Current Question: {{current_question_type}}
-        <br>
         Current Round: {{round+1}}
         <br>
         Current Card: {{current_card+1}} / {{cards.length}}
