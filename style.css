@@ -30,9 +30,6 @@ text-indent:0;
 	font-size:15px;
 	font-weight:bold;
 	font-style:normal;
-height:50px;
-	line-height:50px;
-width:140px;
 	text-decoration:none;
 	text-align:center;
 	text-shadow:0px 1px 0px #ffffff;
@@ -46,7 +43,9 @@ width:140px;
 	top:1px;
 }
 
-
+.oracle_text_option {
+  min-width:20vw;
+}
 
 td {
   border: 1px solid black;
@@ -57,7 +56,7 @@ td {
 }
 
 button {
-  width: auto;
+
 }
 
 

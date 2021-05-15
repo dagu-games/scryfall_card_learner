@@ -88,18 +88,18 @@
             <table>
               <tr>
                 <td>
-                  <button class="centered" v-on:click="answer_question(0)">{{current_question_options[0]}}</button>
+                  <button v-bind:class="{ centered: true, oracle_text_option: current_question_type == 'oracle_text' }" v-on:click="answer_question(0)"><span style="white-space: pre-wrap;">{{current_question_options[0]}}</span></button>
                 </td>
                 <td>
-                  <button class="centered" v-on:click="answer_question(1)">{{current_question_options[1]}}</button>
+                  <button v-bind:class="{ centered: true, oracle_text_option: current_question_type == 'oracle_text' }" v-on:click="answer_question(1)"><span style="white-space: pre-wrap;">{{current_question_options[1]}}</span></button>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <button class="centered" v-on:click="answer_question(2)">{{current_question_options[2]}}</button>
+                  <button v-bind:class="{ centered: true, oracle_text_option: current_question_type == 'oracle_text' }" v-on:click="answer_question(2)"><span style="white-space: pre-wrap;">{{current_question_options[2]}}</span></button>
                 </td>
                 <td>
-                  <button class="centered" v-on:click="answer_question(3)">{{current_question_options[3]}}</button>
+                  <button v-bind:class="{ centered: true, oracle_text_option: current_question_type == 'oracle_text' }" v-on:click="answer_question(3)"><span style="white-space: pre-wrap;">{{current_question_options[3]}}</span></button>
                 </td>
               </tr>
             </table>
