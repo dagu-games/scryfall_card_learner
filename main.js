@@ -285,6 +285,7 @@ var app = new Vue({
         this.refreshQuestions();
       }
       this.correct_answer_index = Math.floor(Math.random() * 4);
+      console.log(this.correct_answer_index + 1);
       var question_types = [
         "name",
         "mana_cost",
