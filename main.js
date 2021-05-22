@@ -1,4 +1,5 @@
-var cards = [{
+var cards = [
+  {
     name: "Giant's Growth",
     mana_cost: "{G}",
     type: "instant",
@@ -81,12 +82,20 @@ var app = new Vue({
     question_order: [5, 4, 3, 2, 1, 0],
     seed_string: "",
     seed_number: 100,
+    seed_sort: "released",
+    seed_direction: "asc",
     round: 0,
     scryfall_page: 1,
     file_text: "",
     previous_cards: [],
     show_results: false,
     add_count: 0,
+    possible_questions: {
+      name: true,
+      mana_cost: true,
+      oracle_text: true,
+      type: true,
+    },
   },
   mounted: function() {
     this.onLoaded();
@@ -150,6 +159,9 @@ var app = new Vue({
         round: this.round,
         scryfall_page: this.scryfall_page,
         seed_string: this.seed_string,
+        seed_count: this.seed_count,
+        seed_sort: this.seed_sort,
+        seed_direction: this.seed_direction,
         successes: this.successes,
         attempts: this.attempts,
         current_card: this.current_card,
@@ -157,6 +169,7 @@ var app = new Vue({
         current_question_type: this.current_question_type,
         current_question_options: this.current_question_options,
         previous_cards: this.previous_cards,
+        possible_questions: this.possible_questions,
       };
       localStorage.save_data = LZString.compressToBase64(JSON.stringify(save_data));
     },
@@ -164,12 +177,19 @@ var app = new Vue({
       this.current_card = 0;
       this.correct_answer_index = Math.floor(Math.random() * 4);
       this.shuffle(this.question_order);
-      var question_types = [
-        "name",
-        "mana_cost",
-        "type",
-        "oracle_text"
-      ];
+      var question_types = [];
+      if(this.possible_questions.type){
+        question_types.push("type");
+      }
+      if(this.possible_questions.mana_cost){
+        question_types.push("mana_cost");
+      }
+      if(this.possible_questions.oracle_text){
+        question_types.push("oracle_text");
+      }
+      if(this.possible_questions.name || question_types.length == 0){
+        question_types.push("name");
+      }
       this.current_question_type = question_types[Math.floor(Math.random() * question_types.length)];
 
       var possible_answers = [];
@@ -227,6 +247,9 @@ var app = new Vue({
         this.round = save_data.round;
         this.scryfall_page = save_data.scryfall_page;
         this.seed_string = save_data.seed_string;
+        this.seed_count = save_data.seed_count;
+        this.seed_sort = save_data.seed_sort;
+        this.seed_direction = save_data.seed_direction;
         this.successes = save_data.successes;
         this.attempts = save_data.attempts;
         this.current_card = save_data.current_card;
@@ -234,6 +257,7 @@ var app = new Vue({
         this.current_question_type = save_data.current_question_type;
         this.current_question_options = save_data.current_question_options;
         this.previous_cards = save_data.previous_cards;
+        this.possible_questions = save_data.possible_questions;
       }
     },
     shuffle: function(arr) {
@@ -286,12 +310,19 @@ var app = new Vue({
       }
       this.correct_answer_index = Math.floor(Math.random() * 4);
       console.log(this.correct_answer_index + 1);
-      var question_types = [
-        "name",
-        "mana_cost",
-        "type",
-        "oracle_text"
-      ];
+      var question_types = [];
+      if(this.possible_questions.type){
+        question_types.push("type");
+      }
+      if(this.possible_questions.mana_cost){
+        question_types.push("mana_cost");
+      }
+      if(this.possible_questions.oracle_text){
+        question_types.push("oracle_text");
+      }
+      if(this.possible_questions.name || question_types.length == 0){
+        question_types.push("name");
+      }
       this.current_question_type = question_types[Math.floor(Math.random() * question_types.length)];
 
       var possible_answers = [];
@@ -351,7 +382,7 @@ var app = new Vue({
       } else {
         query = this.seed_string + " lang:english";
       }
-      const url = 'https://api.scryfall.com/cards/search?order=released&unique=cards&dir=asc&include_extras=false&page=' + this.scryfall_page + '&q=' + encodeURI(query);
+      const url = 'https://api.scryfall.com/cards/search?order=' + this.seed_sort + '&unique=art&dir=' + this.seed_direction + '&include_extras=false&page=' + this.scryfall_page + '&q=' + encodeURI(query);
       Http.open("GET", url);
 
       Http.onreadystatechange = (e) => {
@@ -464,7 +495,7 @@ var app = new Vue({
       } else {
         query = this.seed_string + " lang:english";
       }
-      const url = 'https://api.scryfall.com/cards/search?order=released&unique=cards&dir=asc&include_extras=false&page=' + 1 + '&q=' + encodeURI(query);
+      const url = 'https://api.scryfall.com/cards/search?order=' + this.seed_sort + '&unique=art&dir=' + this.seed_direction + '&include_extras=false&page=' + 1 + '&q=' + encodeURI(query);
       Http.open("GET", url);
 
       Http.onreadystatechange = (e) => {

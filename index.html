@@ -9,22 +9,20 @@
 
   <div id="app">
     <div>
-      <div class="top_bar">
-        {{Math.round((current_card / cards.length)*100)}}%
+
+
+
+      <div class="top_bar" style="white-space: pre;">
+        <button v-if="is_settings_hidden()" v-on:click="toggle_settings()">Open Settings</button><button v-if="!is_settings_hidden()" v-on:click="toggle_settings()">Close Settings</button>     Current Round: {{round+1}}     Current Card: {{current_card+1}} / {{cards.length}}     {{Math.round((current_card / cards.length)*100)}}%</pre>
         <div class="progress_bar_back">
           <div class="progress_bar" v-bind:style="{ width: getProgress + '%' }"></div>
-        </div><br>
+        </div>
       </div>
-      <div class="top_left_bar">
-        <button v-if="is_settings_hidden()" v-on:click="toggle_settings()">Open Settings</button>
-        <button v-if="!is_settings_hidden()" v-on:click="toggle_settings()">Close Settings</button>
-        <br>
-        Current Round: {{round+1}}
-        <br>
-        Current Card: {{current_card+1}} / {{cards.length}}
-
+      <div class="settings_container">
         <div v-if="!is_settings_hidden()">
           <div>
+
+
 
             <br>
             Seed String
@@ -33,36 +31,80 @@
             Seed Number
             <input v-model="seed_number" placeholder="example: 100">
             <br>
-            <button v-on:click="seed_cards()">Seed Cards</button>
+            Sort by
+            <select v-model="seed_sort">
+              <option>name</option>
+              <option>set</option>
+              <option>released</option>
+              <option>rarity</option>
+              <option>color</option>
+              <option>usd</option>
+              <option>tix</option>
+              <option>eur</option>
+              <option>cmc</option>
+              <option>power</option>
+              <option>toughness</option>
+              <option>edhrec</option>
+              <option>artist</option>
+            </select>
             <br>
+            Ascending or Descending
+            <select v-model="seed_direction">
+              <option>auto</option>
+              <option>asc</option>
+              <option>desc</option>
+            </select>
             <br>
+            <button v-on:click="seed_cards()">Seed Cards</button><br>
+            <br>
+            Question Types
+            <br>
+            <input type="checkbox" id="name_checkbox" v-model="possible_questions.name">
+            <label for="name_checkbox">Name</label>
+            <br>
+            <input type="checkbox" id="mana_cost_checkbox" v-model="possible_questions.mana_cost">
+            <label for="mana_cost_checkbox">Mana Cost</label>
+            <br>
+            <input type="checkbox" id="type_checkbox" v-model="possible_questions.type">
+            <label for="type_checkbox">Type</label>
+            <br>
+            <input type="checkbox" id="oracle_text_checkbox" v-model="possible_questions.oracle_text">
+            <label for="oracle_text_checkbox">Oracle Text</label>
+            <br>
+
+            <br><br>
             <button v-on:click="downloadData()">Download Save Data</button>
-            <br>
-            <br>
+            <br><br>
             <div>
               <label for="input-file">Load save file:</label><br>
               <input type="file" id="input-file" v-on:change="uploadData($event)">
             </div>
-
-            <br>
-            <br>
-            <br>
+            <br><br><br>
             <button v-on:click="clearData()">Delete Save Data</button>
-
             <br>
+
+
+
+
           </div>
         </div>
       </div>
 
-      <div v-if="!showResults()">
+      <div v-if="!showResults() && is_settings_hidden()">
         <div class="question_container">
           <div class="left_section">
+
+
+
             <h2>
               {{ current_question_type == "name" ? "What is the name of this card?" : ""}}
               {{ current_question_type == "type" ? "What is this card's type?" : ""}}
               {{ current_question_type == "mana_cost" ? "What is the mana cost for this card?" : ""}}
               {{ current_question_type == "oracle_text" ? "What is the rules text for this card?" : ""}}
             </h2>
+
+
+
             <table>
               <tr style="width:100%;">
                 <td style="width:75%;">{{current_question_type!='name'? cards[question_order[current_card]].name : '???'}}</td>
@@ -79,8 +121,13 @@
               </tr>
             </table>
 
+
+
           </div>
           <div class="right_section">
+
+
+
             <table>
               <tr>
                 <td>
@@ -99,27 +146,27 @@
                 </td>
               </tr>
             </table>
+
+
+
+
           </div>
         </div>
-
-
-
-
-
       </div>
-      <div v-if="showResults()">
+      <div v-if="showResults() && is_settings_hidden()">
         <div class="results_container">
+
+
           <h2>{{previous_cards[0].correct ? "Correct" : "Wrong"}}</h2>
           <img v-for="card_link in previous_cards[0].links" :src="card_link" :alt="'oops'" />
           <button v-on:click="dismissResults()">Next Question</button>
+
+
         </div>
-
       </div>
-
-
-
-
       <div class="bottom_bar">
+
+
         <table>
           <tr>
             <td v-for="tcard in previous_cards">
@@ -132,10 +179,10 @@
             </td>
           </tr>
         </table>
+
+
+
       </div>
-
-
-
     </div>
   </div>
 

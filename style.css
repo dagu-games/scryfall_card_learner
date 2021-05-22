@@ -73,15 +73,15 @@ button {}
   height: 20vh;
 }
 
-.top_left_bar {
-  width: 25%;
-  top: 0;
-  left: 0;
+.settings_container {
+  width: 75%;
+  top: 5%;
+  left: 15%;
   position: absolute;
 }
 
 .top_bar {
-  width: 75%;
+  width: 100%;
   top: 0;
   right: 0;
   position: absolute;
@@ -99,7 +99,7 @@ button {}
 .progress_bar_back {
   background-color: lightgrey;
   height: 100%;
-  width: 95%;
+  width: 60%;
   position: absolute;
   right: 0;
   top: 0;
