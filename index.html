@@ -4,6 +4,7 @@
 <body>
   <script src="./lib/vue.js"></script>
   <script language="javascript" src="./lib/lz-string.js"></script>
+  <script src="https://kit.fontawesome.com/554f8d51c3.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="style.css">
 
 
@@ -13,7 +14,7 @@
 
 
       <div class="top_bar" style="white-space: pre;">
-        <button v-if="is_settings_hidden()" v-on:click="toggle_settings()">Open Settings</button><button v-if="!is_settings_hidden()" v-on:click="toggle_settings()">Close Settings</button>     Current Round: {{round+1}}     Current Card: {{current_card+1}} / {{cards.length}}     {{Math.round((current_card / cards.length)*100)}}%</pre>
+        <i class="fas fa-cog" v-on:click="toggle_settings()"></i>     Current Round: {{round+1}}     Current Card: {{current_card+1}} / {{cards.length}}     {{Math.round((current_card / cards.length)*100)}}%</pre>
         <div class="progress_bar_back">
           <div class="progress_bar" v-bind:style="{ width: getProgress + '%' }"></div>
         </div>
@@ -25,6 +26,7 @@
 
 
             <br>
+
             Seed String
             <input v-model="seed_string" placeholder="example: legal:modern">
             <br>
@@ -167,7 +169,7 @@
       <div class="bottom_bar">
 
 
-        <table>
+        <table style="position: absolute; right:0;">
           <tr>
             <td v-for="tcard in previous_cards">
               {{tcard.correct ? "Correct" : "Wrong"}}
