@@ -587,10 +587,6 @@ var app = new Vue({
           }
           this.refreshQuestions();
           this.saveData();
-          if (this.cards.length < this.seed_number) {
-            this.add_count = this.seed_number - this.cards.length;
-            this.add_card();
-          }
         }
       }
 
