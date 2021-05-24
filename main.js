@@ -71,6 +71,7 @@ var app = new Vue({
     successes: 0,
     attempts: 0,
     hide_settings: true,
+    hide_help: true,
     current_question_type: "name",
     current_question_options: [
       "card1",
@@ -282,6 +283,9 @@ var app = new Vue({
     is_settings_hidden: function() {
       return this.hide_settings;
     },
+    is_help_hidden: function() {
+      return this.hide_help;
+    },
     answer_question: function(answer_index) {
       this.cards[this.question_order[this.current_card]].attempts++;
       this.attempts++;
@@ -372,6 +376,13 @@ var app = new Vue({
         app.hide_settings = false;
       } else {
         app.hide_settings = true;
+      }
+    },
+    toggle_help: function() {
+      if (app.hide_help) {
+        app.hide_help = false;
+      } else {
+        app.hide_help = true;
       }
     },
     add_card: function() {

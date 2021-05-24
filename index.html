@@ -14,11 +14,12 @@
 
 
       <div class="top_bar" style="white-space: pre;">
-        <i class="fas fa-cog" v-on:click="toggle_settings()"></i>     Current Round: {{round+1}}     Current Card: {{current_card+1}} / {{cards.length}}     {{Math.round((current_card / cards.length)*100)}}%</pre>
+        <i class="fas fa-cog" v-on:click="toggle_settings()"></i><i class="fas fa-question-circle" v-on:click="toggle_help()"></i>     Current Round: {{round+1}}     Current Card: {{current_card+1}} / {{cards.length}}     {{Math.round((current_card / cards.length)*100)}}%</pre>
         <div class="progress_bar_back">
           <div class="progress_bar" v-bind:style="{ width: getProgress + '%' }"></div>
         </div>
       </div>
+
       <div class="settings_container">
         <div v-if="!is_settings_hidden()">
           <div>
@@ -185,6 +186,46 @@
 
 
       </div>
+
+      <div>
+        <div v-if="!is_help_hidden()">
+          <div class="help_container">
+            <i style="float:right;" class="fas fa-times" v-on:click="toggle_help()"></i>
+            <h2>Help</h2>
+            This is a tool to help you memorize Magic: The Gathering cards.
+            The program works by pulling cards from Scryfall.com.
+            It loads in a number of seed cards that are determined by the seed string.
+            If you get a question wrong, you will start the current list of cards over from the beginning.
+            If you get every question right and make it to the end of the round, a new card will be added to the set.
+
+            <h3>Seed String</h3>
+            This is the query used to search scryfall for cards to memorize. You can use any normal Scryfall syntax to limit the pool of cards.
+            <a href="https://scryfall.com/docs/syntax">Click Here for more syntax info for pulling cards from Scryfall</a>
+
+            <h3>Seed Number</h3>
+            This is the number of cards pulled to populate the inital pool of cards. Normally this number is 100 and is limited to less than 175 and more than 10.
+
+            <h3>Sort By</h3>
+            This is the method to sort cards by when pulling from Scryfall.
+
+            <h3>Seed Cards</h3>
+            This is the button that re-seeds the cards in the set. Use this to reset your progress and start memorizing a new set of cards.
+
+            <h3>Question Types</h3>
+            This allows you to disable or enable certain question types. If you do not want to be asked about the mana cost of cards, simply deselect the checkbox for Mana Cost.
+
+            <h3>Download Save Data</h3>
+            This allows you to save your progress to a file that can then be imported later to resume where you left off. This is useful for changing what computer you are on or backing up your progress.
+
+            <h3>Load Save File</h3>
+            This allows you to upload your save file to resume where you left off.
+
+            <h3>Delete Save Data</h3>
+            This will delete all of your progress!!! Use with caution!!!
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
