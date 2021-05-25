@@ -116,7 +116,7 @@ var app = new Vue({
     scryfall_get_func: function() {
       const Http = new XMLHttpRequest();
       var query = "";
-      if (this.seed_string = "") {
+      if (this.seed_string == "") {
         query = "lang:english";
       } else {
         query = this.seed_string + " lang:english";
