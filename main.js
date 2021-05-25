@@ -85,6 +85,7 @@ var app = new Vue({
     seed_number: 100,
     seed_sort: "released",
     seed_direction: "asc",
+    seed_unique: "art",
     round: 0,
     scryfall_page: 1,
     file_text: "",
@@ -163,6 +164,7 @@ var app = new Vue({
         seed_count: this.seed_count,
         seed_sort: this.seed_sort,
         seed_direction: this.seed_direction,
+        seed_unique: this.seed_unique,
         successes: this.successes,
         attempts: this.attempts,
         current_card: this.current_card,
@@ -251,6 +253,7 @@ var app = new Vue({
         this.seed_count = save_data.seed_count;
         this.seed_sort = save_data.seed_sort;
         this.seed_direction = save_data.seed_direction;
+        this.seed_unique = save_data.seed_unique;
         this.successes = save_data.successes;
         this.attempts = save_data.attempts;
         this.current_card = save_data.current_card;
@@ -393,7 +396,7 @@ var app = new Vue({
       } else {
         query = this.seed_string + " lang:english";
       }
-      const url = 'https://api.scryfall.com/cards/search?order=' + this.seed_sort + '&unique=art&dir=' + this.seed_direction + '&include_extras=false&page=' + this.scryfall_page + '&q=' + encodeURI(query);
+      const url = 'https://api.scryfall.com/cards/search?order=' + this.seed_sort + '&unique=' + this.seed_unique + '&dir=' + this.seed_direction + '&include_extras=false&page=' + this.scryfall_page + '&q=' + encodeURI(query);
       Http.open("GET", url);
 
       Http.onreadystatechange = (e) => {
@@ -506,7 +509,7 @@ var app = new Vue({
       } else {
         query = this.seed_string + " lang:english";
       }
-      const url = 'https://api.scryfall.com/cards/search?order=' + this.seed_sort + '&unique=art&dir=' + this.seed_direction + '&include_extras=false&page=' + 1 + '&q=' + encodeURI(query);
+      const url = 'https://api.scryfall.com/cards/search?order=' + this.seed_sort + '&unique=' + this.seed_unique + '&dir=' + this.seed_direction + '&include_extras=false&page=' + 1 + '&q=' + encodeURI(query);
       Http.open("GET", url);
 
       Http.onreadystatechange = (e) => {

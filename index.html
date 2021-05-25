@@ -56,6 +56,12 @@
               <option>auto</option>
               <option>asc</option>
               <option>desc</option>
+            </select><br>
+            Unique by
+            <select v-model="seed_unique">
+              <option>art</option>
+              <option>cards</option>
+              <option>prints</option>
             </select>
             <br>
             <button v-on:click="seed_cards()">Seed Cards</button><br>
@@ -207,6 +213,9 @@
 
             <h3>Sort By</h3>
             This is the method to sort cards by when pulling from Scryfall.
+
+            <h3>Unique By</h3>
+            This is the method to remove duplicates. "art" means to only show dupes if there is different art, "cards" means no dupes, and "prints" means all reprints are included.
 
             <h3>Seed Cards</h3>
             This is the button that re-seeds the cards in the set. Use this to reset your progress and start memorizing a new set of cards.
