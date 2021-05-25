@@ -65,6 +65,13 @@
             </select>
             <br>
             <button v-on:click="seed_cards()">Seed Cards</button><br>
+
+
+            <br>
+            Add Cards
+            <input v-model="add_count" placeholder="example: 100">
+            <button v-on:click="add_n_cards()">Add Cards</button>
+            <br>
             <br>
             Question Types
             <br>
@@ -203,13 +210,14 @@
             It loads in a number of seed cards that are determined by the seed string.
             If you get a question wrong, you will start the current list of cards over from the beginning.
             If you get every question right and make it to the end of the round, a new card will be added to the set.
+            Cards get added according to the query as specified in the settings and can be changed at any time.
 
             <h3>Seed String</h3>
             This is the query used to search scryfall for cards to memorize. You can use any normal Scryfall syntax to limit the pool of cards.
             <a href="https://scryfall.com/docs/syntax">Click Here for more syntax info for pulling cards from Scryfall</a>
 
             <h3>Seed Number</h3>
-            This is the number of cards pulled to populate the inital pool of cards. Normally this number is 100 and is limited to less than 175 and more than 10.
+            This is the number of cards pulled to populate the inital pool of cards. Normally this number is 100 and shouldn't ever be below 10.
 
             <h3>Sort By</h3>
             This is the method to sort cards by when pulling from Scryfall.
