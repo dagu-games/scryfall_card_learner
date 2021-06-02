@@ -1,0 +1,97 @@
+@media (max-aspect-ratio: 1/1) {
+
+  body {
+    font-size: 300%;
+  }
+
+  button {
+    font-size: 100%;
+  }
+
+  .oracle_text_option {
+    min-width: 20vw;
+  }
+
+
+  .bottom_bar {
+    visibility: hidden;
+  }
+
+
+  .settings_container {
+    width: 90%;
+    top: 5%;
+    left: 15%;
+    position: absolute;
+  }
+
+  .top_bar {
+    width: 100%;
+    top: 0;
+    right: 0;
+    position: absolute;
+    height: 2%;
+  }
+
+  .progress_bar {
+    visibility: hidden;
+  }
+
+  .progress_bar_back {
+    visibility: hidden;
+  }
+
+  .results_container {
+    width: 100vw;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: larger;
+  }
+
+  .results_container img {
+    width: 80%;
+    height: auto;
+  }
+
+  .results_container button {
+    font-size: larger;
+  }
+
+  .question_container {
+    height: auto;
+    top: 0;
+    width: 100vw;
+    left: 0;
+    position: absolute;
+  }
+
+  .help_container {
+    height: 70vh;
+    top: 15vh;
+    width: 70vw;
+    left: 15vw;
+    position: absolute;
+    border: 1px solid black;
+    background-color: white;
+    overflow: scroll;
+  }
+
+  .left_section {
+    width: 100%;
+    height: auto;
+    left: 0;
+    top: 0;
+    position: relative;
+  }
+
+  .right_section {
+    width: 100%;
+    height: auto;
+    right: 0;
+    bottom: 0;
+    position: relative;
+  }
+
+}
