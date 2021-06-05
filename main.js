@@ -193,8 +193,6 @@ var app = new Vue({
                   if (response.data[i].card_faces[j].power != null) {
                     tcard.oracle_text += "\n" + response.data[i].card_faces[j].power + "/" + response.data[i].card_faces[j].toughness;
                   }
-                  tcard.card_links = [];
-                  tcard.art_links = [];
                   if (response.data[i].card_faces[j].image_uris != null) {
                     if (response.data[i].card_faces[j].image_uris.png != null) {
                       tcard.card_links.push(response.data[i].card_faces[j].image_uris.png);
