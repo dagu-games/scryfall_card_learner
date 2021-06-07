@@ -1,3 +1,5 @@
+const VERSION = "1.0";
+console.log(VERSION);
 var cards = [
   {
     name: "Giant's Growth",
