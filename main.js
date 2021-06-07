@@ -219,7 +219,7 @@ var app = new Vue({
                 //a single faced card
                 tcard.name = response.data[i].name;
                 tcard.id = response.data[i].id;
-                tcard.mana_cost = response.data[i].mana_cost;
+                tcard.mana_cost = response.data[i].mana_cost == "" ? "[NONE]" : response.data[i].mana_cost;
                 tcard.type = response.data[i].type_line;
                 tcard.oracle_text = response.data[i].oracle_text.replaceAll(tcard.name, "[CARD NAME]").replaceAll(tcard.name.split(',')[0], "[CARD NAME]");
                 if (response.data[i].power != null) {
@@ -239,7 +239,7 @@ var app = new Vue({
                 //a double (or more) faced card
                 tcard.id = response.data[i].id;
                 tcard.name = response.data[i].card_faces[0].name;
-                tcard.mana_cost = response.data[i].card_faces[0].mana_cost;
+                tcard.mana_cost = response.data[i].card_faces[0].mana_cost == "" ? "[NONE]" : response.data[i].card_faces[0].mana_cost;
                 tcard.type = response.data[i].card_faces[0].type_line;
                 tcard.oracle_text = response.data[i].card_faces[0].oracle_text.replaceAll(response.data[i].card_faces[0].name, "[CARD NAME]").replaceAll(response.data[i].card_faces[0].name.split(',')[0], "[CARD NAME]");
                 if (response.data[i].card_faces[0].power != null) {
@@ -257,7 +257,7 @@ var app = new Vue({
                 }
                 for (var j = 1; j < response.data[i].card_faces.length; j++) {
                   tcard.name += "  //  " + response.data[i].card_faces[j].name;
-                  tcard.mana_cost += "  //  " + response.data[i].card_faces[j].mana_cost;
+                  tcard.mana_cost += "  //  " + (response.data[i].card_faces[j].mana_cost == "" ? "[NONE]" : response.data[i].card_faces[j].mana_cost);
                   tcard.type += "  //  " + response.data[i].card_faces[j].type_line;
                   tcard.oracle_text += "  //  " + response.data[i].card_faces[j].oracle_text.replaceAll(response.data[i].card_faces[j].name, "[CARD NAME]").replaceAll(response.data[i].card_faces[j].name.split(',')[0], "[CARD NAME]");
                   if (response.data[i].card_faces[j].power != null) {
