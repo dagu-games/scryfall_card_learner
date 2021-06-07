@@ -47,6 +47,11 @@ button:active {
   top: 1px;
 }
 
+.mana_symbol {
+  height: 1em;
+  width: auto;
+}
+
 .oracle_text_option {
   min-width: 20vw;
 }
@@ -57,18 +62,6 @@ td {
 
 .centered {
   margin: auto;
-}
-
-.bottom_bar {
-  width: 90vw;
-  height: 25vh;
-  bottom: 0;
-  right: 5vw;
-  position: absolute;
-}
-
-.bottom_bar img {
-  height: 20vh;
 }
 
 .settings_container {

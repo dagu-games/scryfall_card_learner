@@ -124,17 +124,17 @@
 
             <table>
               <tr style="width:100%;">
-                <td style="width:75%;">{{current_question_type!='name'? cards[question_order[current_card]].name : '???'}}</td>
-                <td style="width:25%;">{{current_question_type!='mana_cost'? cards[question_order[current_card]].mana_cost : '???'}}</td>
+                <td style="width:75%;" v-html='getHTML("name")'></td>
+                <td style="width:25%;" v-html='getHTML("mana_cost")'></td>
               </tr>
               <tr style="width:100%;">
                 <td colspan="2"><img v-for="art_link in cards[question_order[current_card]].art_links" style="width:100%;" :src="art_link" :alt="'oops'" /></td>
               </tr>
               <tr style="width:100%;">
-                <td colspan="2">{{current_question_type!='type'? cards[question_order[current_card]].type : '???'}}</td>
+                <td colspan="2" v-html='getHTML("type")'></td>
               </tr>
               <tr style="width:100%;">
-                <td colspan="2">{{current_question_type!='oracle_text'? cards[question_order[current_card]].oracle_text : '???'}}</td>
+                <td colspan="2" v-html='getHTML("oracle_text")'></td>
               </tr>
             </table>
 
@@ -148,18 +148,18 @@
             <table>
               <tr>
                 <td>
-                  <button v-bind:class="{ centered: true, oracle_text_option: current_question_type == 'oracle_text' }" v-on:click="answer_question(0)"><span style="white-space: pre-wrap;">{{current_question_options[0]}}</span></button>
+                  <button v-bind:class="{ centered: true, oracle_text_option: current_question_type == 'oracle_text' }" v-on:click="answer_question(0)"><span style="white-space: pre-wrap;" v-html='getHTML("option1")'></span></button>
                 </td>
                 <td>
-                  <button v-bind:class="{ centered: true, oracle_text_option: current_question_type == 'oracle_text' }" v-on:click="answer_question(1)"><span style="white-space: pre-wrap;">{{current_question_options[1]}}</span></button>
+                  <button v-bind:class="{ centered: true, oracle_text_option: current_question_type == 'oracle_text' }" v-on:click="answer_question(1)"><span style="white-space: pre-wrap;" v-html='getHTML("option2")'></span></button>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <button v-bind:class="{ centered: true, oracle_text_option: current_question_type == 'oracle_text' }" v-on:click="answer_question(2)"><span style="white-space: pre-wrap;">{{current_question_options[2]}}</span></button>
+                  <button v-bind:class="{ centered: true, oracle_text_option: current_question_type == 'oracle_text' }" v-on:click="answer_question(2)"><span style="white-space: pre-wrap;" v-html='getHTML("option3")'></span></button>
                 </td>
                 <td>
-                  <button v-bind:class="{ centered: true, oracle_text_option: current_question_type == 'oracle_text' }" v-on:click="answer_question(3)"><span style="white-space: pre-wrap;">{{current_question_options[3]}}</span></button>
+                  <button v-bind:class="{ centered: true, oracle_text_option: current_question_type == 'oracle_text' }" v-on:click="answer_question(3)"><span style="white-space: pre-wrap;" v-html='getHTML("option4")'></span></button>
                 </td>
               </tr>
             </table>
@@ -180,25 +180,6 @@
 
 
         </div>
-      </div>
-      <div class="bottom_bar">
-
-
-        <table style="position: absolute; right:0;">
-          <tr>
-            <td v-for="tcard in previous_cards">
-              {{tcard.correct ? "Correct" : "Wrong"}}
-            </td>
-          </tr>
-          <tr>
-            <td v-for="tcard in previous_cards">
-              <img v-for="card_link in tcard.links" :src="card_link" :alt="'oops'" />
-            </td>
-          </tr>
-        </table>
-
-
-
       </div>
 
       <div>
@@ -247,7 +228,7 @@
     </div>
   </div>
 
-
+  <script src="./symbols.js"></script>
   <script src="./main.js"></script>
 </body>
 

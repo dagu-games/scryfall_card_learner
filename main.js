@@ -110,6 +110,76 @@ var app = new Vue({
     },
   },
   methods: {
+    getHTML: function(field) {
+      //current_question_type!='name'? cards[question_order[current_card]].name : '???'
+      var str = '<i class="ms ms-w ms-cost ms-shadow"></i>';
+
+
+      if(field == "name"){
+        if(this.current_question_type == "name"){
+          str = "???";
+        }else{
+          str = this.cards[this.question_order[this.current_card]].name;
+        }
+      }
+
+      if(field == "mana_cost"){
+        if(this.current_question_type == "mana_cost"){
+          str = "???";
+        }else{
+          str = this.cards[this.question_order[this.current_card]].mana_cost;
+        }
+      }
+
+      if(field == "type"){
+        if(this.current_question_type == "type"){
+          str = "???";
+        }else{
+          str = this.cards[this.question_order[this.current_card]].type;
+        }
+      }
+
+      if(field == "oracle_text"){
+        if(this.current_question_type == "oracle_text"){
+          str = "???";
+        }else{
+          str = this.cards[this.question_order[this.current_card]].oracle_text;
+        }
+      }
+
+      if(field == "option1"){
+        str = this.current_question_options[0];
+      }
+
+      if(field == "option2"){
+        str = this.current_question_options[1];
+      }
+
+      if(field == "option3"){
+        str = this.current_question_options[2];
+      }
+
+      if(field == "option4"){
+        str = this.current_question_options[3];
+      }
+
+
+      while(str.includes("{")){
+        var symbol = "{" + str.split("{")[1].split("}")[0] + "}";
+        var link = "";
+        for(var i = 0; i < scryfall_symbols.data.length; i++){
+          if(symbol == scryfall_symbols.data[i].symbol){
+            link = scryfall_symbols.data[i].svg_uri;
+          }
+        }
+        str = str.replaceAll(symbol,"<img class='mana_symbol' src='" + link + "'/>");
+      }
+
+      if(str==""){
+        str = "[NONE]";
+      }
+      return str;
+    },
     clearData: function() {
       localStorage.save_data = "";
     },
