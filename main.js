@@ -413,7 +413,7 @@ var app = new Vue({
           return 0;
         });
       }else{
-        this.shuffle(this.possible_answers);
+        this.shuffle(possible_answers);
       }
 
       var j = 0;
@@ -550,7 +550,7 @@ var app = new Vue({
           return 0;
         });
       }else{
-        this.shuffle(this.possible_answers);
+        this.shuffle(possible_answers);
       }
 
       var j = 0;
