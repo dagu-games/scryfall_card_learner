@@ -96,6 +96,7 @@ var app = new Vue({
     previous_cards: [],
     show_results: false,
     add_count: 0,
+    hard_mode: false,
     possible_questions: {
       name: true,
       mana_cost: true,
@@ -113,7 +114,6 @@ var app = new Vue({
   },
   methods: {
     getHTML: function(field) {
-      //current_question_type!='name'? cards[question_order[current_card]].name : '???'
       var str = '<i class="ms ms-w ms-cost ms-shadow"></i>';
 
 
@@ -200,7 +200,6 @@ var app = new Vue({
 
 
         if (Http.readyState == 4 && Http.status == 200) {
-          //console.log(Http.responseText);
           var response = JSON.parse(Http.responseText);
 
 
@@ -218,7 +217,6 @@ var app = new Vue({
 
 
               if (response.data[i].card_faces == null) {
-                //a single faced card
                 tcard.name = response.data[i].name;
                 tcard.id = response.data[i].id;
                 tcard.mana_cost = response.data[i].mana_cost == "" ? "[NONE]" : response.data[i].mana_cost;
@@ -238,7 +236,6 @@ var app = new Vue({
                   }
                 }
               } else {
-                //a double (or more) faced card
                 tcard.id = response.data[i].id;
                 tcard.name = response.data[i].card_faces[0].name;
                 tcard.mana_cost = response.data[i].card_faces[0].mana_cost == "" ? "[NONE]" : response.data[i].card_faces[0].mana_cost;
@@ -354,6 +351,7 @@ var app = new Vue({
         seed_sort: this.seed_sort,
         seed_direction: this.seed_direction,
         seed_unique: this.seed_unique,
+        hard_mode: this.hard_mode,
         successes: this.successes,
         attempts: this.attempts,
         current_card: this.current_card,
@@ -399,25 +397,25 @@ var app = new Vue({
           possible_answers.push(this.cards[i][this.current_question_type]);
         }
       }
-      //console.log(possible_answers);
-      possible_answers.sort((a, b) => {
-        var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
-        var dis_a = app.calculateDifference(a, correct_ans);
-        var dis_b = app.calculateDifference(b, correct_ans);
 
-        if (dis_a < dis_b) {
-          return -1;
-        }
-        if (dis_a > dis_b) {
-          return 1;
-        }
-        return 0;
-      });
-      //console.log(possible_answers);
-      //TODO
-      //const levenSort = require('leven-sort');
-      //levenSort(possible_answers, this.cards[this.question_order[this.current_card]][this.current_question_type]);
-      //this.shuffle(possible_answers);
+      if(this.hard_mode){
+        possible_answers.sort((a, b) => {
+          var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
+          var dis_a = app.calculateDifference(a, correct_ans);
+          var dis_b = app.calculateDifference(b, correct_ans);
+
+          if (dis_a < dis_b) {
+            return -1;
+          }
+          if (dis_a > dis_b) {
+            return 1;
+          }
+          return 0;
+        });
+      }else{
+        this.shuffle(this.possible_answers);
+      }
+
       var j = 0;
       for (var i = 0; i < 4; i++) {
         if (i == this.correct_answer_index) {
@@ -450,6 +448,7 @@ var app = new Vue({
         this.current_question_options = save_data.current_question_options;
         this.previous_cards = save_data.previous_cards;
         this.possible_questions = save_data.possible_questions;
+        this.hard_mode = save_data.hard_mode;
       }
     },
     shuffle: function(arr) {
@@ -535,21 +534,25 @@ var app = new Vue({
           possible_answers.push(this.cards[i][this.current_question_type]);
         }
       }
-      //console.log(possible_answers);
-      possible_answers.sort((a, b) => {
-        var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
-        var dis_a = app.calculateDifference(a, correct_ans);
-        var dis_b = app.calculateDifference(b, correct_ans);
 
-        if (dis_a < dis_b) {
-          return -1;
-        }
-        if (dis_a > dis_b) {
-          return 1;
-        }
-        return 0;
-      });
-      //console.log(possible_answers);
+      if(this.hard_mode){
+        possible_answers.sort((a, b) => {
+          var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
+          var dis_a = app.calculateDifference(a, correct_ans);
+          var dis_b = app.calculateDifference(b, correct_ans);
+
+          if (dis_a < dis_b) {
+            return -1;
+          }
+          if (dis_a > dis_b) {
+            return 1;
+          }
+          return 0;
+        });
+      }else{
+        this.shuffle(this.possible_answers);
+      }
+
       var j = 0;
       for (var i = 0; i < 4; i++) {
         if (i == this.correct_answer_index) {
@@ -606,9 +609,9 @@ var app = new Vue({
         for (let i = 1; i <= str1.length; i += 1) {
           const indicator = str1[i - 1] === str2[j - 1] ? 0 : 1;
           track[j][i] = Math.min(
-            track[j][i - 1] + 1, // deletion
-            track[j - 1][i] + 1, // insertion
-            track[j - 1][i - 1] + indicator, // substitution
+            track[j][i - 1] + 1,
+            track[j - 1][i] + 1,
+            track[j - 1][i - 1] + indicator,
           );
         }
       }
