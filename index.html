@@ -16,9 +16,6 @@
 
       <div class="top_bar" style="white-space: pre;">
         <i class="fas fa-cog" v-on:click="toggle_settings()"></i><i class="fas fa-question-circle" v-on:click="toggle_help()"></i>     Current Round: {{round+1}}     Current Card: {{current_card+1}} / {{cards.length}}     {{Math.round((current_card / cards.length)*100)}}%</pre>
-        <div class="progress_bar_back">
-          <div class="progress_bar" v-bind:style="{ width: getProgress + '%' }"></div>
-        </div>
       </div>
 
       <div class="settings_container">
