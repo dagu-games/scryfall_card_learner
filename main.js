@@ -114,6 +114,7 @@ var app = new Vue({
   },
   methods: {
     getHTML: function(field) {
+
       var str = '<i class="ms ms-w ms-cost ms-shadow"></i>';
 
 
@@ -399,6 +400,7 @@ var app = new Vue({
       }
 
       if(this.hard_mode){
+        console.log("starting hard mode sort");
         possible_answers.sort((a, b) => {
           var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
           var dis_a = app.calculateDifference(a, correct_ans);
@@ -412,8 +414,12 @@ var app = new Vue({
           }
           return 0;
         });
+
+        console.log("end of hard mode sort");
       }else{
+        console.log("starting easy mode sort");
         this.shuffle(possible_answers);
+        console.log("end of easy mode sort");
       }
 
       var j = 0;
@@ -536,6 +542,8 @@ var app = new Vue({
       }
 
       if(this.hard_mode){
+
+        console.log("starting hard mode sort");
         possible_answers.sort((a, b) => {
           var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
           var dis_a = app.calculateDifference(a, correct_ans);
@@ -549,8 +557,11 @@ var app = new Vue({
           }
           return 0;
         });
+        console.log("end of hard mode sort");
       }else{
+        console.log("starting easy mode sort");
         this.shuffle(possible_answers);
+        console.log("end of easy mode sort");
       }
 
       var j = 0;
