@@ -385,22 +385,14 @@ var app = new Vue({
 
       var possible_answers = [];
       for (var i = 0; i < this.cards.length; i++) {
-        var found = false;
         if (this.cards[i][this.current_question_type] == this.cards[this.question_order[this.current_card]][this.current_question_type]) {
-          found = true;
-        }
-        for (var j = 0; j < possible_answers.length; j++) {
-          if (possible_answers[j] == this.cards[i][this.current_question_type]) {
-            found = true;
-          }
-        }
-        if (!found) {
           possible_answers.push(this.cards[i][this.current_question_type]);
         }
       }
 
+      possible_answers = [...new Set(possible_answers)];
+
       if(this.hard_mode){
-        console.log("starting hard mode sort");
         possible_answers.sort((a, b) => {
           var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
           var dis_a = app.calculateDifference(a, correct_ans);
@@ -414,12 +406,8 @@ var app = new Vue({
           }
           return 0;
         });
-
-        console.log("end of hard mode sort");
       }else{
-        console.log("starting easy mode sort");
         this.shuffle(possible_answers);
-        console.log("end of easy mode sort");
       }
 
       var j = 0;
@@ -525,25 +513,19 @@ var app = new Vue({
       }
       this.current_question_type = question_types[Math.floor(Math.random() * question_types.length)];
 
+
       var possible_answers = [];
       for (var i = 0; i < this.cards.length; i++) {
-        var found = false;
-        if (this.cards[i][this.current_question_type] == this.cards[this.question_order[this.current_card]][this.current_question_type]) {
-          found = true;
-        }
-        for (var j = 0; j < possible_answers.length; j++) {
-          if (possible_answers[j] == this.cards[i][this.current_question_type]) {
-            found = true;
-          }
-        }
-        if (!found) {
+        if (this.cards[i][this.current_question_type] != this.cards[this.question_order[this.current_card]][this.current_question_type]) {
           possible_answers.push(this.cards[i][this.current_question_type]);
         }
       }
 
+      possible_answers = [...new Set(possible_answers)];
+
+
       if(this.hard_mode){
 
-        console.log("starting hard mode sort");
         possible_answers.sort((a, b) => {
           var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
           var dis_a = app.calculateDifference(a, correct_ans);
@@ -557,11 +539,8 @@ var app = new Vue({
           }
           return 0;
         });
-        console.log("end of hard mode sort");
       }else{
-        console.log("starting easy mode sort");
         this.shuffle(possible_answers);
-        console.log("end of easy mode sort");
       }
 
       var j = 0;

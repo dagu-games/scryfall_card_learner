@@ -1,5 +1,6 @@
 body {
-  background-color: white;
+  background-color: #3cbcfc;
+  color: #000000;
 }
 
 button {
@@ -57,6 +58,7 @@ button:active {
 }
 
 td {
+  background-color: #a4e4fc;
   border: 1px solid black;
 }
 
@@ -80,7 +82,7 @@ td {
 }
 
 .progress_bar {
-  background-color: gray;
+  background-color: #f83800;
   height: 100%;
   position: absolute;
   left: 0;
@@ -88,7 +90,7 @@ td {
 }
 
 .progress_bar_back {
-  background-color: lightgrey;
+  background-color: #a81000;
   height: 100%;
   width: 75%;
   position: absolute;
