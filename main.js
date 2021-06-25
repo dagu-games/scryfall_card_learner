@@ -393,19 +393,28 @@ var app = new Vue({
       possible_answers = [...new Set(possible_answers)];
 
       if(this.hard_mode){
-        possible_answers.sort((a, b) => {
-          var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
-          var dis_a = app.calculateDifference(a, correct_ans);
-          var dis_b = app.calculateDifference(b, correct_ans);
+        var t_p_array = [];
+        var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
+        for(var i = 0; i < possible_answers.length; i++){
+          t_p_array.push({
+            data: possible_answers[i],
+            distance: app.calculateDifference(possible_answers[i], correct_ans),
+          });
+        }
 
-          if (dis_a < dis_b) {
+        possible_answers.sort((a, b) => {
+          if (a.distance < b.distance) {
             return -1;
           }
-          if (dis_a > dis_b) {
+          if (a.distance > b.distance) {
             return 1;
           }
           return 0;
         });
+        possible_answers = [];
+        for(var i = 0; i < t_p_array.length; i++){
+          possible_answers.push(t_p_array[i].data);
+        }
       }else{
         this.shuffle(possible_answers);
       }
@@ -525,20 +534,28 @@ var app = new Vue({
 
 
       if(this.hard_mode){
+        var t_p_array = [];
+        var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
+        for(var i = 0; i < possible_answers.length; i++){
+          t_p_array.push({
+            data: possible_answers[i],
+            distance: app.calculateDifference(possible_answers[i], correct_ans),
+          });
+        }
 
         possible_answers.sort((a, b) => {
-          var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
-          var dis_a = app.calculateDifference(a, correct_ans);
-          var dis_b = app.calculateDifference(b, correct_ans);
-
-          if (dis_a < dis_b) {
+          if (a.distance < b.distance) {
             return -1;
           }
-          if (dis_a > dis_b) {
+          if (a.distance > b.distance) {
             return 1;
           }
           return 0;
         });
+        possible_answers = [];
+        for(var i = 0; i < t_p_array.length; i++){
+          possible_answers.push(t_p_array[i].data);
+        }
       }else{
         this.shuffle(possible_answers);
       }
