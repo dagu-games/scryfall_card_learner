@@ -273,12 +273,14 @@ var app = new Vue({
           }
 
 
-          if (this.add_count > 0) {
+          if (this.add_count > 0 && response.has_more) {
             this.scryfall_page++;
             setTimeout(function(){
               app.scryfall_get_func();
             }, 100);
           }else{
+            this.add_count = 0;
+            this.scryfall_page = 0;
             this.refreshQuestions();
             this.saveData();
           }
