@@ -1,7 +1,6 @@
 const VERSION = "1.2";
 console.log(VERSION);
-var cards = [
-  {
+var cards = [{
     name: "Giant's Growth",
     mana_cost: "{G}",
     type: "instant",
@@ -106,66 +105,66 @@ var app = new Vue({
       var str = '<i class="ms ms-w ms-cost ms-shadow"></i>';
 
 
-      if(field == "name"){
-        if(this.current_question_type == "name"){
+      if (field == "name") {
+        if (this.current_question_type == "name") {
           str = "???";
-        }else{
+        } else {
           str = this.cards[this.question_order[this.current_card]].name;
         }
       }
 
-      if(field == "mana_cost"){
-        if(this.current_question_type == "mana_cost"){
+      if (field == "mana_cost") {
+        if (this.current_question_type == "mana_cost") {
           str = "???";
-        }else{
+        } else {
           str = this.cards[this.question_order[this.current_card]].mana_cost;
         }
       }
 
-      if(field == "type"){
-        if(this.current_question_type == "type"){
+      if (field == "type") {
+        if (this.current_question_type == "type") {
           str = "???";
-        }else{
+        } else {
           str = this.cards[this.question_order[this.current_card]].type;
         }
       }
 
-      if(field == "oracle_text"){
-        if(this.current_question_type == "oracle_text"){
+      if (field == "oracle_text") {
+        if (this.current_question_type == "oracle_text") {
           str = "???";
-        }else{
+        } else {
           str = this.cards[this.question_order[this.current_card]].oracle_text;
         }
       }
 
-      if(field == "option1"){
+      if (field == "option1") {
         str = this.current_question_options[0];
       }
 
-      if(field == "option2"){
+      if (field == "option2") {
         str = this.current_question_options[1];
       }
 
-      if(field == "option3"){
+      if (field == "option3") {
         str = this.current_question_options[2];
       }
 
-      if(field == "option4"){
+      if (field == "option4") {
         str = this.current_question_options[3];
       }
 
-      while(str.includes("{")){
+      while (str.includes("{")) {
         var symbol = "{" + str.split("{")[1].split("}")[0] + "}";
         var link = "";
-        for(var i = 0; i < scryfall_symbols.data.length; i++){
-          if(symbol == scryfall_symbols.data[i].symbol){
+        for (var i = 0; i < scryfall_symbols.data.length; i++) {
+          if (symbol == scryfall_symbols.data[i].symbol) {
             link = scryfall_symbols.data[i].svg_uri;
           }
         }
-        str = str.replaceAll(symbol,"<img class='mana_symbol' src='" + link + "'/>");
+        str = str.replaceAll(symbol, "<img class='mana_symbol' src='" + link + "'/>");
       }
 
-      if(str==""){
+      if (str == "") {
         str = "[NONE]";
       }
       return str;
@@ -198,7 +197,7 @@ var app = new Vue({
             var found = false;
             var tcard = {};
             for (var j = 0; j < this.cards.length; j++) {
-              if (this.cards[j].id == response.data[i].id) {
+              if (this.cards[j].id == response.data[i].id || this.cards[j].name == response.data[i].name) {
                 found = true;
               }
             }
@@ -267,7 +266,7 @@ var app = new Vue({
 
 
             }
-            if(this.add_count <=0){
+            if (this.add_count <= 0) {
               break;
             }
           }
@@ -275,10 +274,10 @@ var app = new Vue({
 
           if (this.add_count > 0 && response.has_more) {
             this.scryfall_page++;
-            setTimeout(function(){
+            setTimeout(function() {
               app.scryfall_get_func();
             }, 100);
-          }else{
+          } else {
             this.add_count = 0;
             this.scryfall_page = 0;
             this.refreshQuestions();
@@ -359,16 +358,16 @@ var app = new Vue({
       this.correct_answer_index = Math.floor(Math.random() * 4);
       this.shuffle(this.question_order);
       var question_types = [];
-      if(this.possible_questions.type){
+      if (this.possible_questions.type) {
         question_types.push("type");
       }
-      if(this.possible_questions.mana_cost){
+      if (this.possible_questions.mana_cost) {
         question_types.push("mana_cost");
       }
-      if(this.possible_questions.oracle_text){
+      if (this.possible_questions.oracle_text) {
         question_types.push("oracle_text");
       }
-      if(this.possible_questions.name || question_types.length == 0){
+      if (this.possible_questions.name || question_types.length == 0) {
         question_types.push("name");
       }
       this.current_question_type = question_types[Math.floor(Math.random() * question_types.length)];
@@ -382,10 +381,10 @@ var app = new Vue({
 
       possible_answers = [...new Set(possible_answers)];
 
-      if(this.hard_mode){
+      if (this.hard_mode) {
         var t_p_array = [];
         var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
-        for(var i = 0; i < possible_answers.length; i++){
+        for (var i = 0; i < possible_answers.length; i++) {
           t_p_array.push({
             data: possible_answers[i],
             distance: app.calculateDifference(possible_answers[i], correct_ans),
@@ -402,10 +401,10 @@ var app = new Vue({
           return 0;
         });
         possible_answers = [];
-        for(var i = 0; i < t_p_array.length; i++){
+        for (var i = 0; i < t_p_array.length; i++) {
           possible_answers.push(t_p_array[i].data);
         }
-      }else{
+      } else {
         this.shuffle(possible_answers);
       }
 
@@ -498,16 +497,16 @@ var app = new Vue({
       this.correct_answer_index = Math.floor(Math.random() * 4);
       console.log(this.correct_answer_index + 1);
       var question_types = [];
-      if(this.possible_questions.type){
+      if (this.possible_questions.type) {
         question_types.push("type");
       }
-      if(this.possible_questions.mana_cost){
+      if (this.possible_questions.mana_cost) {
         question_types.push("mana_cost");
       }
-      if(this.possible_questions.oracle_text){
+      if (this.possible_questions.oracle_text) {
         question_types.push("oracle_text");
       }
-      if(this.possible_questions.name || question_types.length == 0){
+      if (this.possible_questions.name || question_types.length == 0) {
         question_types.push("name");
       }
       this.current_question_type = question_types[Math.floor(Math.random() * question_types.length)];
@@ -523,11 +522,11 @@ var app = new Vue({
       possible_answers = [...new Set(possible_answers)];
 
 
-      if(this.hard_mode){
+      if (this.hard_mode) {
         console.log("hard mode");
         var t_p_array = [];
         var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
-        for(var i = 0; i < possible_answers.length; i++){
+        for (var i = 0; i < possible_answers.length; i++) {
           t_p_array.push({
             data: possible_answers[i],
             distance: app.calculateDifference(possible_answers[i], correct_ans),
@@ -544,10 +543,10 @@ var app = new Vue({
           return 0;
         });
         possible_answers = [];
-        for(var i = 0; i < t_p_array.length; i++){
+        for (var i = 0; i < t_p_array.length; i++) {
           possible_answers.push(t_p_array[i].data);
         }
-      }else{
+      } else {
         this.shuffle(possible_answers);
       }
 

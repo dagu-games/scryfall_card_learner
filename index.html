@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <body>
   <link rel="icon" href="https://dagu-games.github.io/scryfall_card_learner/favicon.ico">
   <script src="./lib/vue.js"></script>
@@ -15,7 +16,8 @@
 
 
       <div class="top_bar" style="white-space: pre;">
-        <i class="fas fa-cog" v-on:click="toggle_settings()"></i><i class="fas fa-question-circle" v-on:click="toggle_help()"></i>     Current Round: {{round+1}}     Current Card: {{current_card+1}} / {{cards.length}}     {{Math.round((current_card / cards.length)*100)}}%</pre>
+        <i class="fas fa-cog" v-on:click="toggle_settings()"></i><i class="fas fa-question-circle" v-on:click="toggle_help()"></i> Current Round: {{round+1}} Current Card: {{current_card+1}} / {{cards.length}}
+        {{Math.round((current_card / cards.length)*100)}}%</pre>
       </div>
 
       <div class="settings_container">
