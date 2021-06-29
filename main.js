@@ -6,8 +6,6 @@ var cards = [
     mana_cost: "{G}",
     type: "instant",
     oracle_text: "target creature gets +3/+3",
-    successes: 0,
-    attempts: 0,
     card_links: ["images/card_back.jpg"],
     art_links: ["images/card_back.jpg"],
   },
@@ -16,8 +14,6 @@ var cards = [
     mana_cost: "{G}1",
     type: "instant1",
     oracle_text: "target creature gets +3/+31",
-    successes: 0,
-    attempts: 0,
     card_links: ["images/card_back.jpg", "images/card_back.jpg"],
     art_links: ["images/card_back.jpg", "images/card_back.jpg"],
   },
@@ -26,8 +22,6 @@ var cards = [
     mana_cost: "{G}2",
     type: "instant2",
     oracle_text: "target creature gets +3/+32",
-    successes: 0,
-    attempts: 0,
     card_links: ["images/card_back.jpg"],
     art_links: ["images/card_back.jpg"],
   },
@@ -36,8 +30,6 @@ var cards = [
     mana_cost: "{G}3",
     type: "instant3",
     oracle_text: "target creature gets +3/+33",
-    successes: 0,
-    attempts: 0,
     card_links: ["images/card_back.jpg"],
     art_links: ["images/card_back.jpg"],
   },
@@ -46,8 +38,6 @@ var cards = [
     mana_cost: "{G}4",
     type: "instant4",
     oracle_text: "target creature gets +3/+34",
-    successes: 0,
-    attempts: 0,
     card_links: ["images/card_back.jpg"],
     art_links: ["images/card_back.jpg"],
   },
@@ -56,8 +46,6 @@ var cards = [
     mana_cost: "{G}5",
     type: "instant5",
     oracle_text: "target creature gets +3/+35",
-    successes: 0,
-    attempts: 0,
     card_links: ["images/card_back.jpg"],
     art_links: ["images/card_back.jpg"],
   },
@@ -96,7 +84,7 @@ var app = new Vue({
     previous_cards: [],
     show_results: false,
     add_count: 0,
-    hard_mode: false,
+    hard_mode: true,
     possible_questions: {
       name: true,
       mana_cost: true,
@@ -166,7 +154,6 @@ var app = new Vue({
         str = this.current_question_options[3];
       }
 
-
       while(str.includes("{")){
         var symbol = "{" + str.split("{")[1].split("}")[0] + "}";
         var link = "";
@@ -185,6 +172,7 @@ var app = new Vue({
     },
     clearData: function() {
       localStorage.save_data = "";
+      console.log("deleted save data");
     },
     scryfall_get_func: function() {
       const Http = new XMLHttpRequest();
@@ -385,7 +373,7 @@ var app = new Vue({
 
       var possible_answers = [];
       for (var i = 0; i < this.cards.length; i++) {
-        if (this.cards[i][this.current_question_type] == this.cards[this.question_order[this.current_card]][this.current_question_type]) {
+        if (this.cards[i][this.current_question_type] != this.cards[this.question_order[this.current_card]][this.current_question_type]) {
           possible_answers.push(this.cards[i][this.current_question_type]);
         }
       }
@@ -402,7 +390,7 @@ var app = new Vue({
           });
         }
 
-        possible_answers.sort((a, b) => {
+        t_p_array.sort((a, b) => {
           if (a.distance < b.distance) {
             return -1;
           }
@@ -534,6 +522,7 @@ var app = new Vue({
 
 
       if(this.hard_mode){
+        console.log("hard mode");
         var t_p_array = [];
         var correct_ans = this.cards[this.question_order[this.current_card]][this.current_question_type];
         for(var i = 0; i < possible_answers.length; i++){
@@ -543,7 +532,7 @@ var app = new Vue({
           });
         }
 
-        possible_answers.sort((a, b) => {
+        t_p_array.sort((a, b) => {
           if (a.distance < b.distance) {
             return -1;
           }
